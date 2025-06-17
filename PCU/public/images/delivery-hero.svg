@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Background Elements -->
+        <circle fill="#E3F2FD" cx="400" cy="300" r="250"/>
+        <circle fill="#BBDEFB" cx="400" cy="300" r="200"/>
+        
+        <!-- Delivery Truck -->
+        <g transform="translate(200, 250)">
+            <!-- Truck Body -->
+            <rect fill="#2196F3" x="0" y="0" width="300" height="120" rx="10"/>
+            <rect fill="#1976D2" x="0" y="0" width="100" height="120" rx="10"/>
+            
+            <!-- Windows -->
+            <rect fill="#E3F2FD" x="20" y="20" width="60" height="40" rx="5"/>
+            
+            <!-- Wheels -->
+            <circle fill="#424242" cx="80" cy="140" r="20"/>
+            <circle fill="#424242" cx="250" cy="140" r="20"/>
+            <circle fill="#E0E0E0" cx="80" cy="140" r="10"/>
+            <circle fill="#E0E0E0" cx="250" cy="140" r="10"/>
+            
+            <!-- Headlights -->
+            <rect fill="#FFC107" x="0" y="40" width="10" height="20" rx="5"/>
+            <rect fill="#FFC107" x="0" y="70" width="10" height="20" rx="5"/>
+        </g>
+        
+        <!-- Package -->
+        <g transform="translate(500, 200)">
+            <rect fill="#4CAF50" x="0" y="0" width="100" height="100" rx="10"/>
+            <rect fill="#81C784" x="20" y="20" width="60" height="60" rx="5"/>
+            <line x1="20" y1="50" x2="80" y2="50" stroke="#E8F5E9" stroke-width="4"/>
+            <line x1="50" y1="20" x2="50" y2="80" stroke="#E8F5E9" stroke-width="4"/>
+        </g>
+        
+        <!-- Decorative Elements -->
+        <circle fill="#90CAF9" cx="150" cy="150" r="30"/>
+        <circle fill="#90CAF9" cx="650" cy="450" r="40"/>
+        <circle fill="#90CAF9" cx="500" cy="100" r="25"/>
+    </g>
+</svg> 

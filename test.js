@@ -6,7 +6,7 @@ let concordantsFields = [
     model.playerModel.getModelWithId('entity_concordants_5'),
     model.playerModel.getModelWithId('entity_concordants_6'),
     model.playerModel.getModelWithId('entity_concordants_7'),
-    model.playerModel.getModelWithId('entity_concordants_8'),
+    model.playerModel.getModelWithId('entity_concordants_8')
 ];
 
 let targetField = model.playerModel.getModelWithId('entity_concordants11_copy1');
@@ -26,7 +26,7 @@ const mergeAndDeduplicate = (lists) => {
     return result;
 };
 
-const transferDynamicValues = () => {
+const transferDynamicValues = () => {   
     let allUsers = [];
 
     concordantsFields.forEach((field, index) => {

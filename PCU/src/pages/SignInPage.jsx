@@ -1,10 +1,10 @@
-import NavbarPage from "../Components/NavbarPage";
+import NavbarComp from "../Components/Navbar.jsx";
 import SignIn from "../Components/SignIn/SignIn";
 
 function SignInPage() {
   return(
     <div>
-      <NavbarPage />
+      <NavbarComp />
       <div className="container mt-5">
         <SignIn />
       </div>
