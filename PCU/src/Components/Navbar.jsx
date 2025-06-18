@@ -41,7 +41,6 @@ const NavbarComp = () => {
             <Nav.Link onClick={() => handleSectionClick('calculator')}>Калькулятор</Nav.Link>
             <Nav.Link onClick={() => handleSectionClick('about')}>О нас</Nav.Link>
             <Nav.Link onClick={() => handleSectionClick('contact')}>Связаться с нами</Nav.Link>
-            <Nav.Link as={Link} to="/admin">Админ панель</Nav.Link>
           </Nav>
           <Form className="d-flex">
             <Button variant="outline-success" onClick={handleLogin}>Войти</Button>

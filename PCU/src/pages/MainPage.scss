@@ -388,13 +388,18 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 30px;
+      padding: 0 20px;
 
       .stat-card {
         background: #f8f9fa;
-        padding: 30px;
+        padding: 30px 20px;
         border-radius: 15px;
         text-align: center;
         transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
         &:hover {
           transform: translateY(-5px);
@@ -405,17 +410,22 @@
           font-size: 36px;
           color: #007bff;
           margin-bottom: 20px;
+          width: 40px;
+          height: 40px;
         }
 
         h4 {
           font-size: 32px;
           color: #2d3436;
           margin-bottom: 10px;
+          line-height: 1.2;
         }
 
         p {
           font-size: 16px;
           color: #636e72;
+          margin: 0;
+          line-height: 1.4;
         }
       }
     }
@@ -561,6 +571,25 @@
   .about-section {
     .stats {
       grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 0 10px;
+
+      .stat-card {
+        padding: 20px 15px;
+
+        svg {
+          font-size: 32px;
+          margin-bottom: 15px;
+        }
+
+        h4 {
+          font-size: 28px;
+        }
+
+        p {
+          font-size: 14px;
+        }
+      }
     }
   }
 
@@ -571,6 +600,7 @@
   }
 }
 
+/* Mobile L (768px) */
 @media (max-width: 768px) {
   .hero {
     flex-direction: column;
@@ -611,12 +641,114 @@
       grid-template-columns: 1fr;
     }
   }
+
+  .about-section {
+    padding: 60px 15px;
+
+    .about-hero {
+      margin-bottom: 40px;
+
+      h2 {
+        font-size: 28px;
+      }
+
+      p {
+        font-size: 16px;
+      }
+    }
+
+    .about-content {
+      .mission {
+        margin-bottom: 40px;
+
+        h3 {
+          font-size: 24px;
+        }
+
+        p {
+          font-size: 16px;
+        }
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        padding: 0;
+
+        .stat-card {
+          padding: 15px 10px;
+
+          svg {
+            font-size: 28px;
+            margin-bottom: 10px;
+          }
+
+          h4 {
+            font-size: 24px;
+            margin-bottom: 5px;
+          }
+
+          p {
+            font-size: 13px;
+          }
+        }
+      }
+    }
+  }
 }
 
+/* Mobile M (480px) */
 @media (max-width: 480px) {
   .about-section {
-    .stats {
-      grid-template-columns: 1fr;
+    padding: 40px 10px;
+
+    .about-hero {
+      margin-bottom: 30px;
+
+      h2 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+    }
+
+    .about-content {
+      .mission {
+        margin-bottom: 30px;
+
+        h3 {
+          font-size: 20px;
+        }
+
+        p {
+          font-size: 14px;
+        }
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+        gap: 15px;
+
+        .stat-card {
+          padding: 20px 15px;
+
+          svg {
+            font-size: 32px;
+            margin-bottom: 15px;
+          }
+
+          h4 {
+            font-size: 28px;
+            margin-bottom: 8px;
+          }
+
+          p {
+            font-size: 14px;
+          }
+        }
+      }
     }
   }
 
@@ -627,6 +759,184 @@
 
     p {
       font-size: 1rem;
+    }
+  }
+}
+
+/* Mobile S (320px) */
+@media (max-width: 320px) {
+  .about-section {
+    padding: 30px 5px;
+
+    .about-hero {
+      margin-bottom: 25px;
+
+      h2 {
+        font-size: 22px;
+      }
+
+      p {
+        font-size: 13px;
+      }
+    }
+
+    .about-content {
+      .mission {
+        margin-bottom: 25px;
+
+        h3 {
+          font-size: 18px;
+        }
+
+        p {
+          font-size: 13px;
+        }
+      }
+
+      .stats {
+        gap: 10px;
+
+        .stat-card {
+          padding: 15px 10px;
+
+          svg {
+            font-size: 28px;
+            margin-bottom: 10px;
+            width: 32px;
+            height: 32px;
+          }
+
+          h4 {
+            font-size: 24px;
+            margin-bottom: 5px;
+          }
+
+          p {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+
+  .hero {
+    padding: 0 10px;
+
+    .hero-content {
+      h1 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+    }
+
+    .hero-buttons {
+      flex-direction: column;
+      gap: 10px;
+
+      .primary-button, .secondary-button {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+
+  .calculator-section {
+    padding: 40px 10px;
+
+    .calculator-container {
+      padding: 20px 15px;
+    }
+
+    .calculator-header {
+      h2 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+    }
+
+    .calculator-form {
+      .form-group {
+        label {
+          font-size: 14px;
+        }
+
+        input {
+          padding: 10px;
+          font-size: 14px;
+        }
+      }
+
+      .calculate-button {
+        padding: 12px;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .contact-section {
+    padding: 40px 10px;
+
+    .contact-hero {
+      h2 {
+        font-size: 24px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+    }
+
+    .contact-content {
+      .contact-info {
+        .info-card {
+          padding: 15px 10px;
+
+          svg {
+            font-size: 24px;
+            margin-bottom: 10px;
+          }
+
+          h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+          }
+
+          p {
+            font-size: 12px;
+          }
+        }
+      }
+
+      .contact-form {
+        padding: 20px 15px;
+
+        h3 {
+          font-size: 20px;
+          margin-bottom: 20px;
+        }
+
+        .form-group {
+          label {
+            font-size: 14px;
+          }
+
+          input, textarea {
+            padding: 10px;
+            font-size: 14px;
+          }
+        }
+
+        .submit-button {
+          padding: 12px;
+          font-size: 16px;
+        }
+      }
     }
   }
 } 
