@@ -25,9 +25,8 @@ function SignUp() {
         phone,
         address
       });
-      console.log('Registration successful:', response.data);
-      alert('Registration successful!');
-      navigate('/signIn'); // Перенаправление на страницу входа
+      alert('Registration successful! Please check your email for OTP.')
+			navigate('/verify-otp', { state: { email } })
       // Здесь можно добавить редирект на страницу входа или другую страницу
     } catch (error) {
       console.error('Error:', error.response?.data || error.message);
