@@ -9,7 +9,7 @@ const MainPage = () => {
     <div className="main-page">
       <NavbarComp />
       
-      {/* Hero Section */}
+      {/* Hero Section */}A
       <section className="hero">
         <div className="hero-content">
           <h1>Надежная доставка по всему миру</h1>

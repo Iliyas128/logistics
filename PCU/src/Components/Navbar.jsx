@@ -25,7 +25,7 @@ const NavbarComp = () => {
   };
 
   return (
-    <Navbar fixed="top" expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
+    <Navbar fixed="top" z-index="1" expand="lg" className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
       <Container fluid>
         <Navbar.Brand as={Link} to="/">Logistics</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />

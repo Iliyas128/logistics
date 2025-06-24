@@ -1,5 +1,5 @@
-import NavbarPage from '../Components/NavbarPage'
-import Otp2 from '../Components/OtpVerify'
+import NavbarPage from '../Components/Navbar'
+import Otp2 from '../Components/OTP/OtpVerify.jsx'
 
 function OtpPage() {
 	return (

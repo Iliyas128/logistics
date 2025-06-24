@@ -20,19 +20,14 @@ function SignIn() {
     event.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      await axios.post('http://localhost:5000/api/users/login', {
         email,
         password
       });
-      console.log('Login successful:', response.data);
-      alert('Login successful!');
-      navigate('/'); // Redirect to the main page after successful login
-
+      navigate('/');
     } catch (error) {
-      if(error.response?.data){
-        setError(error.response.data);
-      } 
-      setError('Sing-in error');
+      setError(`Error: ${error.response?.data?.message || error.message}`);
+      console.log(error)
     }
     finally{
       setLoading(false);
@@ -43,7 +38,7 @@ function SignIn() {
   }
   return (
     <Container className={styles.signInContainer} fluid="lg">
-    <div className={styles.centerSignInContainer}>
+    <div className>
     { loading ===true ?
       <FullScreenSpinner/>
       :
@@ -87,11 +82,17 @@ function SignIn() {
     )
   }
     </div>
-    <ToastContainer className = "p-3" position='top-end' style={{zIndex: 1}}>
-    <Toast show={Boolean(error)}>
+    <ToastContainer className = "p-3" style={{
+      position: 'fixed',
+      top: 20,
+      right: 20,
+      zIndex: 1055,
+      width: 280,
+    }}>
+    <Toast show={Boolean(error)} onClose={closeToaster} autohide delay={3000}>
       <Toast.Body>
         <div className={styles.toasterContent}>
-        <span>{error || 'Sign-in error'}</span>
+        <span>{error}</span>
         <Button onClick={closeToaster} variant='outline-dark' size='sm'>&times;</Button>
         </div>
       </Toast.Body>
