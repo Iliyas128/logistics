@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import FullScreenSpinner from '../../shared/FullScreenSpinner';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../hooks/useAuth';
 
 function SignIn() {
   const [email, setEmail] = useState('');
@@ -15,16 +16,28 @@ function SignIn() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const auth = useAuth();
+  const login = auth?.login;
 
   async function SignInFunction(event) {
     event.preventDefault();
+    if (!login) {
+      setError('Ошибка авторизации: контекст не подключен.');
+      return;
+    }
     try {
       setLoading(true);
-      await axios.post('http://localhost:5000/api/users/login', {
+      const response = await axios.post('http://localhost:5000/api/users/login', {
         email,
         password
       });
-      navigate('/');
+      // Сохраняем пользователя в контекст авторизации
+      login({
+        ...response.data.user,
+        role: response.data.user.role || 'USER',
+        token: response.data.token
+      });
+      navigate('/profile');
     } catch (error) {
       setError(`Error: ${error.response?.data?.message || error.message}`);
       console.log(error)

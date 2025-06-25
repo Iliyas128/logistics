@@ -1,5 +1,5 @@
-import NavbarComp from "../Components/Navbar.jsx";
-import SignIn from "../Components/SignIn/SignIn";
+import NavbarComp from "../../Components/Navbar.jsx";
+import SignIn from "../../Components/SignIn/SignIn.jsx";
 
 function SignInPage() {
   return(
