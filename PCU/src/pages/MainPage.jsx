@@ -233,7 +233,6 @@ const MainPage = () => {
 						Создать заказ
 					</Link>
 				</div>
-				<h1>Arlenmjmnjjn</h1>
 			</section>
 		</div>
 	)
