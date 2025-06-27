@@ -21,7 +21,11 @@ app.use('/api/users', userRoutes)
 // Connect to MongoDB
 mongoose
 	.connect(process.env.MONGODB_URI)
-	.then(() => console.log('Connected to MongoDB'))
+	.then(() => {
+		console.log('Connected to MongoDB')
+		// Start the cleanup scheduler AFTER DB is connected
+		startUserCleanupJob()
+	})
 	.catch(err => console.error('MongoDB connection error:', err))
 
 // Start server
@@ -29,3 +33,33 @@ const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`)
 })
+
+// --- User cleanup job ---
+const User = require('./models/User')
+
+// This function deletes unverified users whose OTP has expired
+function cleanupUnverifiedUsers() {
+	const now = new Date()
+	User.deleteMany({
+		isVerified: false,
+		otpExpires: { $lt: now },
+	})
+		.then(result => {
+			if (result.deletedCount > 0) {
+				console.log(
+					`Cleaned up ${result.deletedCount} unverified expired users.`
+				)
+			}
+		})
+		.catch(err => {
+			console.error('Error cleaning up users:', err)
+		})
+}
+
+// Start the job every 5 minutes
+function startUserCleanupJob() {
+	// Run immediately at start
+	cleanupUnverifiedUsers()
+	// Then every 5 minutes
+	setInterval(cleanupUnverifiedUsers, 1 * 60 * 1000)
+}
