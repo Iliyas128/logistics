@@ -1,16 +1,25 @@
 import { useAuth } from '../hooks/useAuth';
+import { Container, Card, Form, Button, Row, Col } from 'react-bootstrap';
+import UserInfo from '../Components/Profile/UserInfo';
+import OrderList from '../Components/Profile/OrderList';
 
 export default function ProfilePage() {
-  const { user } = useAuth();
+    const { user } = useAuth();
 
-  if (!user) return <div>Загрузка...</div>;
+    const dummyOrders = [
+        { _id: '1', title: 'Заказ №1', status: 'В обработке', createdAt: new Date() },
+        { _id: '2', title: 'Заказ №2', status: 'Завершён', createdAt: new Date() },
+    ];
 
-  return (
-    <div style={{ maxWidth: 600, margin: '40px auto', padding: 24, background: '#fff', borderRadius: 12 }}>
-      <h2>Профиль пользователя</h2>
-      <p><b>Имя:</b> {user.username || user.name}</p>
-      <p><b>Email:</b> {user.email}</p>
-      <p><b>Роль:</b> {user.role}</p>
-    </div>
-  );
-} 
+    if (!user) return <div className="text-center mt-5">Загрузка...</div>;
+
+    return (
+        <Container className="py-5" style={{ maxWidth: '900px' }}>
+            {/* Секция: Информация о пользователе */}
+            <UserInfo user={user}/>
+
+            {/* Секция: Заказы */}
+            <OrderList orders={dummyOrders}/>
+        </Container>
+    );
+}

@@ -11,6 +11,18 @@ const MainPage = () => {
       
       {/* Hero Section */}A
       <section className="hero">
+        <div className="hero-bg-video">
+          <video
+            src="/video/LogisticsStockVideo.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="full-hero-video"
+          >
+            Ваш браузер не поддерживает видео.
+          </video>
+        </div>
         <div className="hero-content">
           <h1>Надежная доставка по всему миру</h1>
           <p>
@@ -25,9 +37,6 @@ const MainPage = () => {
               Создать заказ
             </Link>
           </div>
-        </div>
-        <div className="hero-image">
-          <img src="/images/delivery-hero.svg" alt="Delivery" />
         </div>
       </section>
 

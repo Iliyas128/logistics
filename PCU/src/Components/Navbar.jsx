@@ -4,10 +4,12 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
 
 const NavbarComp = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, logout } = useAuth();
 
   const handleLogin = () => {
     navigate('/signin');
@@ -37,13 +39,22 @@ const NavbarComp = () => {
           >
             <Nav.Link as={Link} to="/">Главная</Nav.Link>
             <Nav.Link as={Link} to="/track">Отследить</Nav.Link>
-            <Nav.Link as={Link} to="/order">Создать заказ</Nav.Link>
+            <Nav.Link as={Link} to="/profile/order">Создать заказ</Nav.Link>
             <Nav.Link onClick={() => handleSectionClick('calculator')}>Калькулятор</Nav.Link>
             <Nav.Link onClick={() => handleSectionClick('about')}>О нас</Nav.Link>
             <Nav.Link onClick={() => handleSectionClick('contact')}>Связаться с нами</Nav.Link>
           </Nav>
           <Form className="d-flex">
-            <Button variant="outline-success" onClick={handleLogin}>Войти</Button>
+            {user ? (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ color: '#fff', fontWeight: 500, cursor: 'pointer' }} onClick={() => navigate('/profile')}>
+                  {user.username}
+                </span>
+                <Button variant="outline-danger" size="sm" onClick={logout}>Выйти</Button>
+              </div>
+            ) : (
+              <Button variant="outline-success" onClick={handleLogin}>Войти</Button>
+            )}
           </Form>
         </Navbar.Collapse>
       </Container>
