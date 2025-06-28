@@ -33,7 +33,7 @@ const MainPage = () => {
             <Link to="/track" className="primary-button">
               Отследить посылку
             </Link>
-            <Link to="/order" className="secondary-button">
+            <Link to="/profile/order" className="secondary-button">
               Создать заказ
             </Link>
           </div>

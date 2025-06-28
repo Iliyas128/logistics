@@ -1,34 +1,50 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
-  senderName: {
-    type: String,
+  // Отправитель
+  senderCompany: String,
+  senderContact: String,
+  senderCountry: String,
+  senderCity: String,
+  senderIndex: String,
+  senderAddress: String,
+  senderPhone: String,
+
+  // Получатель
+  receiverCompany: String,
+  receiverContact: String,
+  receiverCountry: String,
+  receiverCity: String,
+  receiverIndex: String,
+  receiverAddress: String,
+  receiverPhone: String,
+
+  // Услуги и опции
+  serviceExpress: Boolean,
+  serviceNotification: Boolean,
+  servicePersonal: Boolean,
+  paymentCondition: String, // отправитель/получатель/3-я сторона
+  paymentForm: String,      // наличные/по счету
+  cargoDescription: String,
+
+  // Дополнительная информация
+  places: String,
+  weight: String,
+  volumeWeight: String,
+  dimensions: String,
+  declaredValue: String,
+  additionalService: String,
+  additionalPacking: String,
+  deliveryPoint: String,
+
+  // Привязка к пользователю
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
-  senderPhone: {
-    type: Number,
-    required: true
-  },
-  senderAddress: {
-    type: String,
-    required: true
-  },
-  receiverName: {
-    type: String,
-    required: true
-  },
-  receiverPhone: {
-    type: Number,
-    required: true
-  },
-  receiverAddress: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
+
+  // Статус и дата
   status: {
     type: String,
     enum: ['ожидает', 'в пути', 'доставлен'],
@@ -40,4 +56,4 @@ const orderSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Order', orderSchema); 
+module.exports = mongoose.model('Order', orderSchema);

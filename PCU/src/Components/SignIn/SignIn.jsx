@@ -31,11 +31,12 @@ function SignIn() {
         email,
         password
       });
-      // Сохраняем пользователя в контекст авторизации
+      // Сохраняем пользователя и токен отдельно
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      localStorage.setItem('token', response.data.token);
       login({
         ...response.data.user,
-        role: response.data.user.role || 'USER',
-        token: response.data.token
+        role: response.data.user.role || 'USER'
       });
       navigate('/profile');
     } catch (error) {
