@@ -388,6 +388,37 @@
 					background-color: #2c80b4;
 				}
 			}
+			.toggle-extra-title {
+				cursor: pointer;
+				font-weight: 600;
+				margin-bottom: 10px;
+				user-select: none;
+				color: #2c3e50;
+
+				&:hover {
+					color: #007bff;
+				}
+			}
+
+			.extra-options {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+
+				label {
+					display: flex;
+					align-items: center;
+					gap: 8px;
+					font-size: 0.95rem;
+					color: #34495e;
+
+					input[type='checkbox'] {
+						width: 16px;
+						height: 16px;
+						accent-color: #3498db;
+					}
+				}
+			}
 
 			// Список городов
 			.city-suggestions {

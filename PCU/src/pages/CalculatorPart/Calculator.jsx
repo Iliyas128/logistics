@@ -63,18 +63,34 @@ const Calculator = () => {
 	const [error, setError] = useState(null)
 	const [citySuggestions, setCitySuggestions] = useState([])
 	const [activeField, setActiveField] = useState(null)
+	const [showExtraServices, setShowExtraServices] = useState(false)
 
 	const handleInputChange = e => {
 		const { name, value } = e.target
 
 		if (name.includes('dimensions.')) {
 			const dimension = name.split('.')[1]
+			const cleaned = value.replace(/[^0-9.]/g, '') // только цифры и точка
+
+			// предотврати множественные точки
+			if ((cleaned.match(/\./g) || []).length > 1) return
+
 			setFormData(prev => ({
 				...prev,
 				dimensions: {
 					...prev.dimensions,
-					[dimension]: Number(value),
+					[dimension]: cleaned,
 				},
+			}))
+			return
+		}
+		if (name === 'weight') {
+			const cleaned = value.replace(/[^0-9.]/g, '') // только цифры и точка
+			if ((cleaned.match(/\./g) || []).length > 1) return
+
+			setFormData(prev => ({
+				...prev,
+				weight: cleaned,
 			}))
 			return
 		}
@@ -165,7 +181,8 @@ const Calculator = () => {
 							<FaWeight className='input-icon' /> Вес посылки (кг)
 						</label>
 						<input
-							type='number'
+							type='text'
+							inputMode='decimal' // позволяет только цифры и точку на мобильных
 							name='weight'
 							value={formData.weight}
 							onChange={handleInputChange}
@@ -187,7 +204,8 @@ const Calculator = () => {
 											: 'Высота'}
 									</label>
 									<input
-										type='number'
+										type='text'
+										inputMode='decimal' // позволяет только цифры и точку на мобильных
 										name={`dimensions.${dim}`}
 										value={formData.dimensions[dim]}
 										onChange={handleInputChange}
@@ -232,66 +250,85 @@ const Calculator = () => {
 					</div>
 
 					<div className='form-group extra-services'>
-						<h4>Дополнительные услуги</h4>
-						{[
-							{ key: 'insurance', label: 'Страховка (+1%)' },
-							{ key: 'personalDelivery', label: 'Вручение лично (+50%)' },
-							{ key: 'redirection', label: 'Переадресация (+750 тг)' },
-							{ key: 'fragile', label: 'Хрупкий/Стекло (+50%)' },
-							{
-								key: 'industrialArea',
-								label:
-									'Доставка в пригород/промзону/промышленные объекты (+50%)',
-							},
-							{
-								key: 'bubbleWrap',
-								label: 'Воздушно пузырчатая пленка (600 тг/м²)',
-							},
-							{
-								key: 'stretchWrap',
-								label: 'Обмотка стрейч пленкой (250 тг/м²)',
-							},
-							{ key: 'plywoodBox', label: 'Фанерный ящик (30 000 тг)' },
-							{
-								key: 'woodenFrame',
-								label: 'Деревянная обрешетка (18 000 тг/м³)',
-							},
-							{
-								key: 'specialPackaging',
-								label: 'Специализированная упаковка (пенопласт и т.п.)',
-							},
-							{
-								key: 'addressChange',
-								label: 'Перенаправление (адрес в РК) – 750 тг',
-							},
-							{
-								key: 'deliveryNoticeOriginal',
-								label: 'Оригинал уведомления – 600 тг',
-							},
-							{ key: 'deliveryNoticeScan', label: 'Скан уведомления – 200 тг' },
-							{
-								key: 'extraDeliveryAttempt',
-								label: 'Доп. попытка доставки – 750 тг',
-							},
-							{
-								key: 'courierWaitTruck',
-								label: 'Ожидание грузовика (5500 тг)',
-							},
-							{ key: 'courierWaitCar', label: 'Ожидание легкового (2000 тг)' },
-						].map(opt => (
-							<div key={opt.key}>
-								<label>
-									<input
-										type='checkbox'
-										name={`extraServices.${opt.key}`}
-										checked={formData.extraServices[opt.key] || false}
-										onChange={handleInputChange}
-									/>
-									{opt.label}
-								</label>
+						<h4
+							className='toggle-extra-title'
+							onClick={() => setShowExtraServices(prev => !prev)}
+						>
+							{showExtraServices
+								? '➖ Скрыть дополнительные услуги'
+								: '➕ Дополнительные услуги'}
+						</h4>
+
+						{showExtraServices && (
+							<div className='extra-options'>
+								{[
+									{ key: 'insurance', label: 'Страховка (+1%)' },
+									{ key: 'personalDelivery', label: 'Вручение лично (+50%)' },
+									{ key: 'redirection', label: 'Переадресация (+750 тг)' },
+									{ key: 'fragile', label: 'Хрупкий/Стекло (+50%)' },
+									{
+										key: 'industrialArea',
+										label:
+											'Доставка в пригород/промзону/промышленные объекты (+50%)',
+									},
+									{
+										key: 'bubbleWrap',
+										label: 'Воздушно пузырчатая пленка (600 тг/м²)',
+									},
+									{
+										key: 'stretchWrap',
+										label: 'Обмотка стрейч пленкой (250 тг/м²)',
+									},
+									{ key: 'plywoodBox', label: 'Фанерный ящик (30 000 тг)' },
+									{
+										key: 'woodenFrame',
+										label: 'Деревянная обрешетка (18 000 тг/м³)',
+									},
+									{
+										key: 'specialPackaging',
+										label: 'Специализированная упаковка (пенопласт и т.п.)',
+									},
+									{
+										key: 'addressChange',
+										label: 'Перенаправление (адрес в РК) – 750 тг',
+									},
+									{
+										key: 'deliveryNoticeOriginal',
+										label: 'Оригинал уведомления – 600 тг',
+									},
+									{
+										key: 'deliveryNoticeScan',
+										label: 'Скан уведомления – 200 тг',
+									},
+									{
+										key: 'extraDeliveryAttempt',
+										label: 'Доп. попытка доставки – 750 тг',
+									},
+									{
+										key: 'courierWaitTruck',
+										label: 'Ожидание грузовика (5500 тг)',
+									},
+									{
+										key: 'courierWaitCar',
+										label: 'Ожидание легкового (2000 тг)',
+									},
+								].map(opt => (
+									<div key={opt.key}>
+										<label>
+											<input
+												type='checkbox'
+												name={`extraServices.${opt.key}`}
+												checked={formData.extraServices[opt.key] || false}
+												onChange={handleInputChange}
+											/>
+											{opt.label}
+										</label>
+									</div>
+								))}
 							</div>
-						))}
+						)}
 					</div>
+
 					<div className='form-group'>
 						<label>📘 Инструкция по расчёту</label>
 						<a
