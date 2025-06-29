@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
+  // Номер заказа (6-значный)
+  orderNumber: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  
   // Отправитель
   senderCompany: String,
   senderContact: String,

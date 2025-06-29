@@ -8,6 +8,7 @@ import ProfilePage from "../pages/ProfilePage.jsx";
 import AdminPanelPage from "../pages/AdminPanelPage.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import OrderPage from "../pages/OrderPage/OrderPage.jsx";
+import TrackingComp from "../Components/Tracking/TrackingComp.jsx";
 
 const router = createBrowserRouter([
     {
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
             {path:'verify-otp', element:<OtpPage/>},      
             {path:'profile', element:(<PrivateRoute><ProfilePage/></PrivateRoute>)},
             {path:'profile/order',element:(<PrivateRoute><OrderPage/></PrivateRoute>)},
+            {path:'/track',element:<TrackingComp/>},
             {path:'admin', element:(
                 <PrivateRoute adminOnly>
                     <AdminPanelPage/>
