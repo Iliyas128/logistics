@@ -44,6 +44,18 @@ const Calculator = () => {
 			insurance: false,
 			personalDelivery: false,
 			redirection: false,
+			fragile: false,
+			industrialArea: false,
+			bubbleWrap: false,
+			stretchWrap: false,
+			plywoodBox: false,
+			woodenFrame: false,
+			addressChange: false,
+			deliveryNoticeOriginal: false,
+			deliveryNoticeScan: false,
+			extraDeliveryAttempt: false,
+			courierWaitTruck: false,
+			courierWaitCar: false,
 		},
 	})
 
@@ -95,6 +107,16 @@ const Calculator = () => {
 				...prev,
 				deliveryRange: value,
 				deliveryMethod: '',
+			}))
+			return
+		}
+		if (name === 'tariffType') {
+			setFormData(prev => ({
+				...prev,
+				tariffType: value,
+				deliveryRange: '', // сбрасываем зону
+				deliveryMethod: '', // сбрасываем способ
+				to: value === 'LOCAL' ? '' : prev.to, // если LOCAL — очищаем "куда"
 			}))
 			return
 		}
@@ -215,19 +237,71 @@ const Calculator = () => {
 							{ key: 'insurance', label: 'Страховка (+1%)' },
 							{ key: 'personalDelivery', label: 'Вручение лично (+50%)' },
 							{ key: 'redirection', label: 'Переадресация (+750 тг)' },
+							{ key: 'fragile', label: 'Хрупкий/Стекло (+50%)' },
+							{
+								key: 'industrialArea',
+								label:
+									'Доставка в пригород/промзону/промышленные объекты (+50%)',
+							},
+							{
+								key: 'bubbleWrap',
+								label: 'Воздушно пузырчатая пленка (600 тг/м²)',
+							},
+							{
+								key: 'stretchWrap',
+								label: 'Обмотка стрейч пленкой (250 тг/м²)',
+							},
+							{ key: 'plywoodBox', label: 'Фанерный ящик (30 000 тг)' },
+							{
+								key: 'woodenFrame',
+								label: 'Деревянная обрешетка (18 000 тг/м³)',
+							},
+							{
+								key: 'specialPackaging',
+								label: 'Специализированная упаковка (пенопласт и т.п.)',
+							},
+							{
+								key: 'addressChange',
+								label: 'Перенаправление (адрес в РК) – 750 тг',
+							},
+							{
+								key: 'deliveryNoticeOriginal',
+								label: 'Оригинал уведомления – 600 тг',
+							},
+							{ key: 'deliveryNoticeScan', label: 'Скан уведомления – 200 тг' },
+							{
+								key: 'extraDeliveryAttempt',
+								label: 'Доп. попытка доставки – 750 тг',
+							},
+							{
+								key: 'courierWaitTruck',
+								label: 'Ожидание грузовика (5500 тг)',
+							},
+							{ key: 'courierWaitCar', label: 'Ожидание легкового (2000 тг)' },
 						].map(opt => (
 							<div key={opt.key}>
 								<label>
 									<input
 										type='checkbox'
 										name={`extraServices.${opt.key}`}
-										checked={formData.extraServices[opt.key]}
+										checked={formData.extraServices[opt.key] || false}
 										onChange={handleInputChange}
 									/>
 									{opt.label}
 								</label>
 							</div>
 						))}
+					</div>
+					<div className='form-group'>
+						<label>📘 Инструкция по расчёту</label>
+						<a
+							href='/docs/Тарифы SHM Express.docx'
+							target='_blank'
+							rel='noopener noreferrer'
+							className='info-link'
+						>
+							Открыть PDF
+						</a>
 					</div>
 
 					<div className='form-group'>
@@ -258,6 +332,17 @@ const Calculator = () => {
 							</select>
 						</div>
 					)}
+					{result?.notes?.length > 0 && (
+						<div className='info-card'>
+							<h4>Дополнительные сведения:</h4>
+							<ul>
+								{result.notes.map((note, idx) => (
+									<li key={idx}>{note}</li>
+								))}
+							</ul>
+						</div>
+					)}
+
 					{formData.deliveryRange === 'in_city' && (
 						<div className='form-group'>
 							<label>Способ доставки</label>
