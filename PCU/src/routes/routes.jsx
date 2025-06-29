@@ -22,6 +22,7 @@ const router = createBrowserRouter([
             {path:'profile', element:(<PrivateRoute><ProfilePage/></PrivateRoute>)},
             {path:'profile/order',element:(<PrivateRoute><OrderPage/></PrivateRoute>)},
             {path:'/track',element:<TrackingComp/>},
+            {path:'/calculator', element:<OrderPage/>},
             {path:'admin', element:(
                 <PrivateRoute adminOnly>
                     <AdminPanelPage/>
