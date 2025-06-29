@@ -13,10 +13,12 @@ app.use(express.json())
 const orderRoutes = require('./routes/orderRoutes')
 const adminRoutes = require('./routes/adminRoutes')
 const userRoutes = require('./routes/userRoutes')
+const calcRoutes = require('./routes/calcRoutes')
 
 app.use('/api/orders', orderRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/calc', calcRoutes)
 
 // Connect to MongoDB
 mongoose

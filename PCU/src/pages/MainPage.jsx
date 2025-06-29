@@ -12,6 +12,7 @@ import {
 } from 'react-icons/fa'
 import NavbarComp from '../Components/Navbar'
 import './MainPage.scss'
+import Calculator from '../pages/CalculatorPart/Calculator'
 
 const MainPage = () => {
 	return (
@@ -48,46 +49,8 @@ const MainPage = () => {
 					</div>
 				</div>
 			</section>
-			{/* Calculator Section */}
 			<section id='calculator' className='calculator-section'>
-				<div className='calculator-container'>
-					<div className='calculator-header'>
-						<FaCalculator className='calculator-icon' />
-						<h2>Рассчитать стоимость доставки</h2>
-						<p>Узнайте стоимость доставки вашего груза</p>
-					</div>
-					<div className='calculator-form'>
-						<div className='form-group'>
-							<label>Вес (кг)</label>
-							<input type='number' placeholder='Введите вес' />
-						</div>
-						<div className='dimensions-group'>
-							<div className='form-group'>
-								<label>Длина (см)</label>
-								<input type='number' placeholder='Длина' />
-							</div>
-							<div className='form-group'>
-								<label>Ширина (см)</label>
-								<input type='number' placeholder='Ширина' />
-							</div>
-							<div className='form-group'>
-								<label>Высота (см)</label>
-								<input type='number' placeholder='Высота' />
-							</div>
-						</div>
-						<div className='locations-group'>
-							<div className='form-group'>
-								<label>Откуда</label>
-								<input type='text' placeholder='Город отправления' />
-							</div>
-							<div className='form-group'>
-								<label>Куда</label>
-								<input type='text' placeholder='Город получения' />
-							</div>
-						</div>
-						<button className='calculate-button'>Рассчитать стоимость</button>
-					</div>
-				</div>
+				<Calculator />
 			</section>
 			{/* Features Section */}
 			<section className='features'>
