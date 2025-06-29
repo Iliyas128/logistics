@@ -10,8 +10,8 @@ const userSchema = new mongoose.Schema({
 		unique: true,
 		// restrict to only gmail if you want
 		validate: {
-			validator: v => /\b[A-Za-z0-9._%+-]+@gmail\.com\b/.test(v),
-			message: props => `${props.value} is not a valid Gmail!`,
+			validator: v => /\b[A-Za-z0-9._%+-]+@(gmail|icloud)\.com\b/.test(v),
+			message: props => `${props.value} is not a valid Gmail or iCloud!`,
 		},
 	},
 	phone: { type: String, required: true },

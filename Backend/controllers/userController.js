@@ -15,8 +15,16 @@ exports.registerUser = async (req, res) => {
 		const existingEmail = await User.findOne({ email })
 		if (existingEmail)
 			return res.status(400).json({ message: 'Email already registered' })
-		if (!email.endsWith('@gmail.com'))
-			return res.status(401).json({ message: 'Invalid email' })
+		if (!email.endsWith('@gmail.com') && !email.endsWith('@icloud.com'))
+			return res
+				.status(401)
+				.json({ message: 'Only Gmail or iCloud emails are allowed' })
+
+		// Password validation
+		if (password.length < 5 || !/\d/.test(password))
+			return res.status(400).json({
+				message: 'Password must be at least 5 characters and contain a number.',
+			})
 
 		// Generate OTP
 		const otp = crypto.randomInt(100000, 999999)
@@ -34,6 +42,11 @@ exports.registerUser = async (req, res) => {
 		})
 		await user.save()
 
+		res.status(200).json({
+			message:
+				'Registration successful. Please check your email for the OTP to verify.',
+		})
+
 		// Send OTP
 		const mailOptions = {
 			from: process.env.EMAIL_USER,
@@ -42,11 +55,6 @@ exports.registerUser = async (req, res) => {
 			text: `Your OTP is: ${otp}. It will expire in 5 minutes.`,
 		}
 		await transporter.sendMail(mailOptions)
-
-		res.status(200).json({
-			message:
-				'Registration successful. Please check your email for the OTP to verify.',
-		})
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({ message: 'Registration failed.' })

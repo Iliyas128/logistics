@@ -1,8 +1,18 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaTruck, FaMapMarkedAlt, FaClock, FaShieldAlt, FaCalculator, FaUsers, FaEnvelope, FaPhone } from 'react-icons/fa';
-import NavbarComp from '../Components/Navbar';
-import './MainPage.scss';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import {
+	FaTruck,
+	FaMapMarkedAlt,
+	FaClock,
+	FaShieldAlt,
+	FaCalculator,
+	FaUsers,
+	FaEnvelope,
+	FaPhone,
+} from 'react-icons/fa'
+import NavbarComp from '../Components/Navbar'
+import './MainPage.scss'
+import Calculator from '../pages/CalculatorPart/Calculator'
 
 const MainPage = () => {
   return (
@@ -33,7 +43,7 @@ const MainPage = () => {
             <Link to="/track" className="primary-button">
               Отследить посылку
             </Link>
-            <Link to="/profile/order" className="secondary-button">
+            <Link to="/order" className="secondary-button">
               Создать заказ
             </Link>
           </div>
@@ -224,4 +234,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default MainPage
