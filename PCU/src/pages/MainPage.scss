@@ -38,19 +38,21 @@
 	z-index: 2;
 	max-width: 700px;
 	margin-left: 5vw;
-	color: #fff;
+	background-color: rgba(255, 255, 255, 0.55);
+	border-radius: 1rem;
+	padding: 1vw;
 
 	h1 {
 		font-size: 3.5rem;
 		font-weight: 700;
-		color: #2c3e50;
+		color: #1f3c53;
 		margin-bottom: 1.5rem;
 		line-height: 1.2;
 	}
 
 	p {
 		font-size: 1.2rem;
-		color: #34495e;
+		color: #0a0b0c;
 		margin-bottom: 2rem;
 		line-height: 1.6;
 	}
@@ -82,12 +84,11 @@
 }
 
 .secondary-button {
-	background: transparent;
-	color: #3498db;
-	border: 2px solid #3498db;
+	color: #2c3e50;
+	border: 2px solid #2c3e50;
 
 	&:hover {
-		background: #3498db;
+		background:#2c3e50;
 		color: white;
 	}
 }

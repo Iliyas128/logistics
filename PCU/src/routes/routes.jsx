@@ -24,9 +24,7 @@ const router = createBrowserRouter([
             {path:'/track',element:<TrackingComp/>},
             {path:'/calculator', element:<OrderPage/>},
             {path:'admin', element:(
-                <PrivateRoute adminOnly>
                     <AdminPanelPage/>
-                </PrivateRoute>
             )},
         ]
     }

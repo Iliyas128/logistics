@@ -51,10 +51,21 @@ const orderSchema = new mongoose.Schema({
     required: true
   },
 
+  // История статусов
+  statusHistory: [
+    {
+      status: String,
+      location: String,
+      city: String,
+      comment: String,
+      date: { type: Date, default: Date.now }
+    }
+  ],
+
   // Статус и дата
   status: {
     type: String,
-    enum: ['ожидает', 'в пути', 'доставлен'],
+    enum: ['новый', 'получен складом', 'планируется отправка', 'отправлено со склада', 'Забран у перевозчика', 'Доставлен'],
     default: 'ожидает'
   },
   createdAt: {

@@ -57,6 +57,13 @@ router.patch('/orders/:id', auth, async (req, res) => {
     }
     
     order.status = req.body.status;
+    order.statusHistory.push({
+      status: req.body.status,
+      location: req.body.location,
+      city: req.body.city,
+      comment: req.body.comment,
+      date: new Date()
+    });
     await order.save();
     res.json(order);
   } catch (error) {

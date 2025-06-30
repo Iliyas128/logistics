@@ -53,9 +53,10 @@ const TrackingComp = () => {
                 </Form>
                 {error && <Alert variant="danger" className="text-center">{error}</Alert>}
                 {trackData && (
+                    <>
                     <Card className="mt-4 shadow-sm border-0 bg-light">
                         <Card.Body>
-                            <h4 className="mb-3">Заказ №{trackData.orderNumber}</h4>
+                            <h4 className="mb-3">Заказ №{trackData.orderNumber} </h4>
                             <Row>
                                 <Col md={6}>
                                     <p><strong>Статус:</strong> {trackData.status}</p>
@@ -70,6 +71,28 @@ const TrackingComp = () => {
                             </Row>
                         </Card.Body>
                     </Card>
+                    {trackData.statusHistory && trackData.statusHistory.length > 0 && (
+                      <Card className="mt-4 shadow-sm border-0">
+                        <Card.Body>
+                          <h5 className="mb-3">Отслеживание</h5>
+                          {trackData.statusHistory.map((event, idx) => (
+                            <div key={idx} style={{ borderBottom: "1px solid #eee", padding: "10px 0" }}>
+                              <div className="d-flex justify-content-between">
+                                <div>
+                                  <strong>{new Date(event.date).toLocaleDateString()} {new Date(event.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</strong>
+                                  <div>{event.location} {event.city && `(${event.city})`}</div>
+                                  {event.comment && <div style={{ color: '#888' }}>{event.comment}</div>}
+                                </div>
+                                <div style={{ minWidth: 120, textAlign: 'right', color: '#6c757d' }}>
+                                  {event.status}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </Card.Body>
+                      </Card>
+                    )}
+                    </>
                 )}
             </Card>
         </Container>
