@@ -3,22 +3,36 @@ const router = express.Router();
 const Order = require('../models/Order');
 const auth = require('../middleware/auth');
 const { generateOrderNumber } = require('../utils/orderNumberGenerator');
+const { calculateOrderPrice } = require('../utils/tariffUtils');
+const transporter = require('../utils/mailer');
+const User = require('../models/User');
 
 // Создать новый заказ (требуется авторизация)
 router.post('/', auth, async (req, res) => {
   try {
-    // Генерируем номер заказа
     const orderNumber = await generateOrderNumber();
-    
+    const { price, extraServices } = calculateOrderPrice(req.body);
     const order = new Order({
       ...req.body,
-      orderNumber, // Добавляем номер
+      orderNumber,
       userId: req.user._id,
       senderName: req.user.username,
       senderPhone: req.user.phone,
-      senderAddress: req.user.address
+      senderAddress: req.user.address,
+      price,
+      extraServices
     });
     await order.save();
+    // Отправка email пользователю
+    const user = await User.findById(req.user._id);
+    if (user && user.email) {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: `Ваш заказ №${orderNumber} создан`,
+        text: `Ваш заказ №${orderNumber} успешно создан. Статус: ${order.status}. Сумма: ${order.price} тг.`
+      });
+    }
     res.status(201).json(order);
   } catch (error) {
     res.status(400).json({ message: error.message });

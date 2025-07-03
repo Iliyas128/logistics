@@ -6,6 +6,7 @@ const zones = {
 		'Костанай',
 		'Кокшетау',
 		'Петропавловск',
+		'Астана',
 	],
 	2: [
 		'Оскемен',
@@ -129,4 +130,61 @@ function getLocalTariff(
 	}
 }
 
-module.exports = { getZone, getExpressTariff, getPrimeTariff, getLocalTariff }
+function calculateOrderPrice(formData) {
+	// Расчетный вес
+	const { weight, dimensions, tariffType, to, deliveryRange, deliveryMethod, extraServices = {} } = formData;
+	let chargeableWeight = Number(weight);
+	if (dimensions && dimensions.length && dimensions.width && dimensions.height) {
+		const volWeight = (dimensions.length * dimensions.width * dimensions.height) / 5000;
+		chargeableWeight = Math.max(chargeableWeight, volWeight);
+	}
+
+	let zone = 1;
+	if (tariffType !== 'LOCAL' && to) zone = getZone(to);
+
+	let basePrice = 0;
+	if (tariffType === 'EXPRESS') basePrice = getExpressTariff(zone, chargeableWeight);
+	else if (tariffType === 'PRIME') basePrice = getPrimeTariff(zone, chargeableWeight);
+	else basePrice = getLocalTariff(chargeableWeight, deliveryRange, deliveryMethod);
+
+	// Услуги и их цены
+	const servicePrices = {
+		insurance: extraServices.insurance ? Math.round(basePrice * 0.01) : 0,
+		personalDelivery: extraServices.personalDelivery ? Math.round(basePrice * 0.5) : 0,
+		redirection: extraServices.redirection ? 750 : 0,
+		fragile: extraServices.fragile ? Math.round(basePrice * 0.5) : 0,
+		industrialArea: extraServices.industrialArea ? Math.round(basePrice * 0.5) : 0,
+		bubbleWrap: extraServices.bubbleWrap ? 600 : 0,
+		stretchWrap: extraServices.stretchWrap ? 250 : 0,
+		plywoodBox: extraServices.plywoodBox ? 30000 : 0,
+		woodenFrame: extraServices.woodenFrame ? 18000 : 0,
+		specialPackaging: extraServices.specialPackaging ? 0 : 0, // уточнить цену
+		addressChange: extraServices.addressChange ? 750 : 0,
+		deliveryNoticeOriginal: extraServices.deliveryNoticeOriginal ? 600 : 0,
+		deliveryNoticeScan: extraServices.deliveryNoticeScan ? 200 : 0,
+		extraDeliveryAttempt: extraServices.extraDeliveryAttempt ? 750 : 0,
+		courierWaitTruck: extraServices.courierWaitTruck ? 5500 : 0,
+		courierWaitCar: extraServices.courierWaitCar ? 2000 : 0,
+	};
+
+	let total = basePrice;
+	const detailedServices = {};
+	for (const [key, price] of Object.entries(servicePrices)) {
+		if (extraServices[key]) {
+			total += price;
+			detailedServices[key] = { selected: true, price };
+		} else {
+			detailedServices[key] = { selected: false, price: 0 };
+		}
+	}
+
+	return {
+		price: total,
+		extraServices: detailedServices,
+		chargeableWeight,
+		zone,
+		basePrice
+	};
+}
+
+module.exports = { getZone, getExpressTariff, getPrimeTariff, getLocalTariff, calculateOrderPrice }

@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
 const Order = require('../models/Order');
+const transporter = require('../utils/mailer');
 
 // Middleware для проверки авторизации
 const auth = async (req, res, next) => {
@@ -71,13 +72,72 @@ router.patch('/orders/:id', auth, async (req, res) => {
   }
 });
 
-// Получить все заказы (только для администратора)
+// Редактировать услуги заказа (и пересчитать цену)
+router.patch('/orders/:id/services', auth, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: 'Заказ не найден' });
+    }
+    // Обновляем услуги и пересчитываем цену
+    const { price, extraServices } = require('../models/../utils/tariffUtils').calculateOrderPrice({
+      ...order.toObject(),
+      ...req.body // новые услуги и параметры
+    });
+    order.extraServices = extraServices;
+    order.price = price;
+    await order.save();
+    res.json(order);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Получить все заказы (только для администратора, с фильтрацией по городам)
 router.get('/orders', auth, async (req, res) => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 });
+    const { receiverCity, senderCity } = req.query;
+    const filter = {};
+    if (receiverCity) filter.receiverCity = receiverCity;
+    if (senderCity) filter.senderCity = senderCity;
+    const orders = await Order.find(filter).sort({ createdAt: -1 });
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+// Создать заказ с ручным номером (только для администратора)
+router.post('/orders', auth, async (req, res) => {
+  try {
+    if (!req.body.orderNumber) {
+      return res.status(400).json({ message: 'Номер заказа обязателен' });
+    }
+    // Проверка уникальности номера
+    const exists = await Order.findOne({ orderNumber: req.body.orderNumber });
+    if (exists) {
+      return res.status(400).json({ message: 'Этот номер заказа уже занят' });
+    }
+    // Расчёт цены и услуг
+    const { price, extraServices } = require('../utils/tariffUtils').calculateOrderPrice(req.body);
+    const order = new Order({
+      ...req.body,
+      price,
+      extraServices
+    });
+    await order.save();
+    // Отправка email админу или на указанный email
+    if (process.env.ADMIN_ORDER_EMAIL) {
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: process.env.ADMIN_ORDER_EMAIL,
+        subject: `Создан заказ №${order.orderNumber}`,
+        text: `Заказ №${order.orderNumber} успешно создан. Статус: ${order.status}. Сумма: ${order.price} тг.`
+      });
+    }
+    res.status(201).json(order);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 });
 
