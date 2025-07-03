@@ -9,36 +9,71 @@ const orderSchema = new mongoose.Schema({
   },
   
   // Отправитель
-  senderCompany: String,
-  senderContact: String,
-  senderCountry: String,
-  senderCity: String,
+  senderCompany: {
+    type:String,
+    required:true,},
+  senderContact:{
+    type:String,
+    required:true},
+  senderCountry:{
+    type:String,
+    required:true},
+  senderCity:{
+    type:String,
+    required:true},
   senderIndex: String,
-  senderAddress: String,
-  senderPhone: String,
+  senderAddress:{
+    type:String,
+    required:true},
+  senderPhone:{
+    type:String,
+    required:true},
 
   // Получатель
-  receiverCompany: String,
-  receiverContact: String,
-  receiverCountry: String,
-  receiverCity: String,
+  receiverCompany:{
+    type:String,
+    required:true},
+  receiverContact:{
+    type:String,
+    required:true},
+  receiverCountry:{
+    type:String,
+    required:true},
+  receiverCity:{
+    type:String,
+    required:true},
   receiverIndex: String,
-  receiverAddress: String,
-  receiverPhone: String,
+  receiverAddress:{
+    type:String,
+    required:true},
+  receiverPhone:{
+    type:String,
+    required:true},
 
   // Услуги и опции
-  serviceExpress: Boolean,
-  serviceNotification: Boolean,
-  servicePersonal: Boolean,
+  extraServices: {
+    type: Object, // { insurance: { selected: true, price: 500 }, ... }
+    default: {}
+  },
+  price: {
+    type: Number,
+    required: true
+  },
   paymentCondition: String, // отправитель/получатель/3-я сторона
   paymentForm: String,      // наличные/по счету
-  cargoDescription: String,
+  cargoDescription:{
+    type: String,
+    required:true},
 
   // Дополнительная информация
   places: String,
-  weight: String,
+  weight:{type:String,required:true},
   volumeWeight: String,
-  dimensions: String,
+  dimensions: {
+    length: { type: Number },
+    width: { type: Number },
+    height: { type: Number }
+  },
   declaredValue: String,
   additionalService: String,
   additionalPacking: String,
@@ -48,7 +83,7 @@ const orderSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: false
   },
 
   // История статусов
@@ -66,7 +101,7 @@ const orderSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ['новый', 'получен складом', 'планируется отправка', 'отправлено со склада', 'Забран у перевозчика', 'Доставлен'],
-    default: 'ожидает'
+    default: 'новый'
   },
   createdAt: {
     type: Date,

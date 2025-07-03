@@ -31,13 +31,10 @@ function SignIn() {
         email,
         password
       });
-      // Сохраняем пользователя и токен отдельно
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      // Сохраняем токен и пользователя
       localStorage.setItem('token', response.data.token);
-      login({
-        ...response.data.user,
-        role: response.data.user.role || 'USER'
-      });
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      login(response.data.user);
       navigate('/profile');
     } catch (error) {
       setError(`Error: ${error.response?.data?.message || error.message}`);

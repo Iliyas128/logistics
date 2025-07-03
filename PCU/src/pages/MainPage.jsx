@@ -138,19 +138,18 @@ const MainPage = () => {
 						<div className='info-card'>
 							<FaPhone />
 							<h3>Телефон</h3>
-							<p>+7 (999) 123-45-67</p>
-							<p>+7 (999) 765-43-21</p>
+							<p>+7 (700) 799-78-59</p>
 						</div>
 						<div className='info-card'>
 							<FaEnvelope />
 							<h3>Email</h3>
-							<p>info@logistics.ru</p>
+							<p>shmexpress@yandex.kz</p>
 							<p>support@logistics.ru</p>
 						</div>
 						<div className='info-card'>
 							<FaMapMarkedAlt />
 							<h3>Адрес</h3>
-							<p>г. Москва, ул. Примерная, д. 123</p>
+							<p>г. Астана, ул. Е 652 , д. 12 нп3</p>
 						</div>
 						<div className='info-card'>
 							<FaClock />
