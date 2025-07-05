@@ -4,7 +4,7 @@ import styles from './FullScreenSpinner.module.scss';
 function FullScreenSpinner() {
   return (
   <div className={styles.FullScreen}>
-  <Spinner animation="border" />;
+  <Spinner animation="border"/>
   </div>
 )
 }
