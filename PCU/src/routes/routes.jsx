@@ -5,7 +5,7 @@ import {createBrowserRouter} from "react-router-dom";
 import MainPage from "../pages/MainPage.jsx";
 import SignInPage from "../pages/SignInPage/SignInPage.jsx";
 import ProfilePage from "../pages/ProfilePage.jsx";
-import AdminPanelPage from "../pages/AdminPanelPage.jsx";
+import AdminPanelPage from "../pages/AdminPage/AdminPanelPage.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import OrderPage from "../pages/OrderPage/OrderPage.jsx";
 import TrackingComp from "../Components/Tracking/TrackingComp.jsx";

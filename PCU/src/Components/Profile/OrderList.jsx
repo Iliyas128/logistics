@@ -116,10 +116,27 @@ return (
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowDetails(false)}>Закрыть</Button>
+          {detailsOrder && (
+            <Button variant="primary" onClick={() => downloadOrderPDF(detailsOrder)}>
+              Скачать PDF
+            </Button>
+          )}
         </Modal.Footer>
       </Modal>
     </Card>
   );
+}
+
+// --- PDF download function ---
+async function downloadOrderPDF(order) {
+  const jsPDF = (await import('jspdf')).default;
+  await import('../../shared/fonts/FreeSans-normal.js');
+  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [210, 148] });
+  doc.setFont('FreeSans', 'normal');
+  doc.setFontSize(10);
+  // ... (сюда можно скопировать шаблон из админки, если нужно)
+  // Для краткости: вставьте сюда ваш шаблон PDF-накладной
+  doc.save(`order_${order.orderNumber}_nakladnaya.pdf`);
 }
 
 export default OrderList
