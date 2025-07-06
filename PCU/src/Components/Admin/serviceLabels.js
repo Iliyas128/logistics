@@ -1,0 +1,18 @@
+export const serviceLabels = {
+  insurance: 'Страховка (+1%)',
+  personalDelivery: 'Вручение лично (+50%)',
+  redirection: 'Переадресация (+750 тг)',
+  fragile: 'Хрупкий/Стекло (+50%)',
+  industrialArea: 'Промзона/пригород (+50%)',
+  bubbleWrap: 'Пузырчатая пленка (600 тг/м²)',
+  stretchWrap: 'Стрейч пленка (250 тг/m²)',
+  plywoodBox: 'Фанерный ящик (30 000 тг)',
+  woodenFrame: 'Деревянная обрешетка (18 000 тг/м³)',
+  specialPackaging: 'Спец. упаковка',
+  addressChange: 'Перенаправление (750 тг)',
+  deliveryNoticeOriginal: 'Оригинал уведомления (600 тг)',
+  deliveryNoticeScan: 'Скан уведомления (200 тг)',
+  extraDeliveryAttempt: 'Доп. попытка доставки (750 тг)',
+  courierWaitTruck: 'Ожидание грузовика (5500 тг)',
+  courierWaitCar: 'Ожидание легкового (2000 тг)',
+}; 

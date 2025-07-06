@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import axios from "axios";
 import { Card, Alert, Modal, Button } from "react-bootstrap";
+import { generateOrderPDF } from '../Admin/generateOrderPDF';
 
 const serviceLabels = {
   insurance: 'Страховка (+1%)',
@@ -19,6 +20,12 @@ const serviceLabels = {
   extraDeliveryAttempt: 'Доп. попытка доставки (750 тг)',
   courierWaitTruck: 'Ожидание грузовика (5500 тг)',
   courierWaitCar: 'Ожидание легкового (2000 тг)',
+};
+
+const tariffLabels = {
+  EXPRESS: 'Экспресс',
+  PRIME: 'Прайм',
+  LOCAL: 'Локал',
 };
 
 const OrderList = () =>{
@@ -94,7 +101,7 @@ return (
               <div><b>Вес:</b> {detailsOrder.weight} кг</div>
               <div><b>Габариты:</b> {detailsOrder.dimensions?.length} x {detailsOrder.dimensions?.width} x {detailsOrder.dimensions?.height} см</div>
               <div><b>Объявленная стоимость:</b> {detailsOrder.declaredValue}</div>
-              <div><b>Тариф:</b> {detailsOrder.tariffType}</div>
+              <div><b>Тариф:</b> {tariffLabels[detailsOrder.tariffType] || detailsOrder.tariffType}</div>
               <div><b>Цена:</b> {detailsOrder.price} тг</div>
               <div><b>Услуги:</b>
                 <ul>
@@ -104,7 +111,7 @@ return (
                 </ul>
               </div>
               <h5>История статусов</h5>
-              <ul>
+              <ul>  
                 {(detailsOrder.statusHistory || []).map((s, idx) => (
                   <li key={idx}>
                     <b>{s.status}</b> — {s.city || ''} {s.location ? `(${s.location})` : ''} {s.comment && `— ${s.comment}`} <i>{new Date(s.date).toLocaleString()}</i>
@@ -117,7 +124,7 @@ return (
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowDetails(false)}>Закрыть</Button>
           {detailsOrder && (
-            <Button variant="primary" onClick={() => downloadOrderPDF(detailsOrder)}>
+            <Button variant="primary" onClick={() => generateOrderPDF(detailsOrder)}>
               Скачать PDF
             </Button>
           )}
@@ -125,18 +132,6 @@ return (
       </Modal>
     </Card>
   );
-}
-
-// --- PDF download function ---
-async function downloadOrderPDF(order) {
-  const jsPDF = (await import('jspdf')).default;
-  await import('../../shared/fonts/FreeSans-normal.js');
-  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [210, 148] });
-  doc.setFont('FreeSans', 'normal');
-  doc.setFontSize(10);
-  // ... (сюда можно скопировать шаблон из админки, если нужно)
-  // Для краткости: вставьте сюда ваш шаблон PDF-накладной
-  doc.save(`order_${order.orderNumber}_nakladnaya.pdf`);
 }
 
 export default OrderList

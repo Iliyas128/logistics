@@ -2,24 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Modal, Form, Button, Row, Col, Alert } from 'react-bootstrap';
 
-const serviceLabels = {
-  insurance: 'Страховка (+1%)',
-  personalDelivery: 'Вручение лично (+50%)',
-  redirection: 'Переадресация (+750 тг)',
-  fragile: 'Хрупкий/Стекло (+50%)',
-  industrialArea: 'Промзона/пригород (+50%)',
-  bubbleWrap: 'Пузырчатая пленка (600 тг/м²)',
-  stretchWrap: 'Стрейч пленка (250 тг/m²)',
-  plywoodBox: 'Фанерный ящик (30 000 тг)',
-  woodenFrame: 'Деревянная обрешетка (18 000 тг/м³)',
-  specialPackaging: 'Спец. упаковка',
-  addressChange: 'Перенаправление (750 тг)',
-  deliveryNoticeOriginal: 'Оригинал уведомления (600 тг)',
-  deliveryNoticeScan: 'Скан уведомления (200 тг)',
-  extraDeliveryAttempt: 'Доп. попытка доставки (750 тг)',
-  courierWaitTruck: 'Ожидание грузовика (5500 тг)',
-  courierWaitCar: 'Ожидание легкового (2000 тг)',
-};
+import { serviceLabels } from '../../Components/Admin/serviceLabels';
+import { generateOrderPDF } from '../../Components/Admin/generateOrderPDF';
+
 
 export default function AdminPanelPage() {
   const [orders, setOrders] = useState([]);
@@ -182,7 +167,7 @@ export default function AdminPanelPage() {
 
   return (
     <div style={{ padding: 24 }}>
-      <h1>Админ-панель заказов</h1>
+      <h1 style={{marginTop: 30}}>Админ-панель заказов</h1>
       <Button variant="success" style={{ marginBottom: 16 }} onClick={() => setShowCreate(true)}>Создать заказ</Button>
       {error && <div style={{ color: 'red', marginBottom: 12 }}>{error}</div>}
       <div style={{ marginBottom: 16 }}>
@@ -207,6 +192,7 @@ export default function AdminPanelPage() {
               <th>Города</th>
               <th>Услуги</th>
               <th>Цена</th>
+              <th>Объявленная стоимость</th>
               <th>Статус</th>
               <th>Действия</th>
             </tr>
@@ -226,6 +212,7 @@ export default function AdminPanelPage() {
                   </ul>
                 </td>
                 <td><b>{order.price} тг</b></td>
+                <td>{order.declaredValue}</td>
                 <td>
                   <select value={order.status} onChange={e => changeStatus(order, e.target.value)} onClick={e => e.stopPropagation()}>
                     {['новый','получен складом','планируется отправка','отправлено со склада','Забран у перевозчика','Доставлен'].map(s => (
@@ -368,7 +355,15 @@ export default function AdminPanelPage() {
               <div><b>Габариты:</b> {detailsOrder.dimensions?.length} x {detailsOrder.dimensions?.width} x {detailsOrder.dimensions?.height} см</div>
               <div><b>Объявленная стоимость:</b> {detailsOrder.declaredValue}</div>
               <div><b>Тариф:</b> {detailsOrder.tariffType}</div>
-              <div><b>Цена:</b> {detailsOrder.price} тг</div>
+              <div><b>Цена:</b> 
+                <input type="number" min="0" value={detailsOrder.price} onChange={e => setDetailsOrder({ ...detailsOrder, price: e.target.value })} style={{width:100, marginRight:8}} /> тг
+                <Button size="sm" variant="outline-success" onClick={async () => {
+                  try {
+                    await axios.patch(`http://localhost:5000/api/admin/orders/${detailsOrder._id}`, { price: detailsOrder.price }, { headers: { Authorization: `Bearer ${token}` } });
+                    fetchOrders();
+                  } catch (e) { alert('Ошибка при обновлении цены!'); }
+                }}>Сохранить цену</Button>
+              </div>
               <div><b>Услуги:</b>
                 <ul>
                   {Object.entries(detailsOrder.extraServices || {}).filter(([k, v]) => v.selected).map(([k, v]) => (
@@ -391,7 +386,7 @@ export default function AdminPanelPage() {
           <Button variant="secondary" onClick={() => setShowDetails(false)}>Закрыть</Button>
           {detailsOrder && (
             <>
-              <Button variant="outline-primary" style={{marginLeft:8}} onClick={() => downloadOrderPDF(detailsOrder)}>
+              <Button variant="outline-primary" style={{marginLeft:8}} onClick={() => generateOrderPDF(detailsOrder)}>
                 Скачать PDF
               </Button>
             </>
@@ -400,172 +395,4 @@ export default function AdminPanelPage() {
       </Modal>
     </div>
   );
-  // --- PDF download function ---
-  async function downloadOrderPDF(order) {
-    const jsPDF = (await import('jspdf')).default;
-    await import('../../shared/fonts/FreeSans-normal.js');
-
-    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: [210, 148] });
-    doc.setFont('FreeSans', 'normal');
-    doc.setFontSize(10);
-
-    const today = new Date().toLocaleDateString('ru-RU');
-
-    // ===== Header =====
-    doc.setFontSize(20);
-    doc.text('SHM EXPRESS', 10, 12);
-    doc.setFontSize(12);
-    doc.rect(90, 5, 60, 10);
-    doc.text('Call-center 8(700)799-78-59', 92, 12);
-    doc.rect(155, 5, 35, 10);
-    doc.text(order?.orderNumber?.toString().padStart(6, "0") || '', 172.5, 12, { align: 'center' });
-
-    // ===== Отправитель =====
-    doc.setFont('FreeSans', 'normal');
-    doc.setFontSize(10);
-    doc.text('Жөнелтуші / Отправитель', 10, 20);
-    doc.setFont('FreeSans', 'normal');
-    doc.rect(10, 22, 90, 35);
-    const senderFields = [
-      ['Компания / Компания БИН', order.senderCompany],
-      ['Байланысатын тұлғаның аты-жөні / Ф.И.О контактного лица ИИН', order.senderContact],
-      ['Ел / Страна  Қаласы / Город  Индекс / Индекс', `${order.senderCountry || ''} / ${order.senderCity || ''} / ${order.senderZip || ''}`],
-      ['Көшесі, Үй, Пәтері / Улица, Дом, Квартира', order.senderAddress],
-      ['Телефон', order.senderPhone],
-    ];
-    let y = 26;
-    senderFields.forEach(([label, value]) => {
-      doc.setFontSize(6.5);
-      doc.text(label, 12, y);
-      doc.setFontSize(8);
-      doc.text(String(value || ''), 12, y + 3);
-      y += 6;
-    });
-
-    // ===== Получатель =====
-    doc.setFont('FreeSans', 'normal');
-    doc.setFontSize(10);
-    doc.text('Алушы / Получатель', 10, 60);
-    doc.setFont('FreeSans', 'normal');
-    doc.rect(10, 62, 90, 35);
-    const receiverFields = [
-      ['Компания / Компания БИН', order.receiverCompany],
-      ['Байланысатын тұлғаның аты-жөні / Ф.И.О контактного лица ИИН', order.receiverContact],
-      ['Ел / Страна  Қаласы / Город  Индекс / Индекс', `${order.receiverCountry || ''} / ${order.receiverCity || ''} / ${order.receiverZip || ''}`],
-      ['Көшесі, Үй, Пәтері / Улица, Дом, Квартира', order.receiverAddress],
-      ['Телефон', order.receiverPhone],
-    ];
-    y = 66;
-    receiverFields.forEach(([label, value]) => {
-      doc.setFontSize(6.5);
-      doc.text(label, 12, y);
-      doc.setFontSize(8);
-      doc.text(String(value || ''), 12, y + 3);
-      y += 6;
-    });
-
-    // ===== Услуги =====
-    doc.setFont('FreeSans', 'normal');
-    doc.setFontSize(8);
-    doc.text('Қызмет / Услуги', 105, 20);
-    doc.setFont('FreeSans', 'normal');
-    doc.rect(105, 22, 95, 40);
-    // Сопоставление ключей услуг с их позициями на шаблоне
-    const serviceCheckboxes = [
-      { key: 'express', label: 'Экспресс Жедел / Срочно', x: 107, y: 26 },
-      { key: 'other', label: 'Басқа / Другое', x: 152, y: 26 },
-      { key: 'personalDelivery', label: 'Жеке қолына / Лично в руки', x: 107, y: 30 },
-      { key: 'city', label: 'Қала / Город', x: 152, y: 30 },
-      { key: 'deliveryNotice', label: 'Хабарлама / Уведомление', x: 107, y: 34 },
-    ];
-    serviceCheckboxes.forEach(({ key, label, x, y }) => {
-      doc.rect(x, y - 2, 3, 3);
-      doc.setFontSize(7);
-      doc.text(label, x + 5, y);
-      // Если услуга выбрана — рисуем галочку
-      if (order.extraServices && (order.extraServices[key] || (order.extraServices[key] && order.extraServices[key].selected))) {
-        doc.setLineWidth(0.7);
-        doc.line(x + 0.5, y - 0.5, x + 1.5, y + 1.5);
-        doc.line(x + 1.5, y + 1.5, x + 2.5, y - 1.5);
-        doc.setLineWidth(0.2);
-      }
-    });
-
-    doc.setFontSize(7);
-    doc.text('Төлем шарттары / Условия оплаты', 107, 39);
-    const paymentConditions = ['Жөнелтуші / Отправитель', 'АлушыПолучатель', '3-ші тарап / 3-я сторона'];
-    const paymentForms = ['Қолма-қол ақша / Наличные', 'Шот бойынша / По счету'];
-    paymentConditions.forEach((cond, i) => {
-      const yOffset = 44 + i * 4;
-      doc.rect(107, yOffset - 4, 3, 3);
-      doc.text(cond, 112, yOffset-2);
-    });
-
-    doc.text('Төлем нысаны / Форма оплаты', 155, 39);
-    paymentForms.forEach((form, i) => {
-      const yOffset = 44 + i * 4;
-      doc.rect(155, yOffset - 4, 3, 3);
-      doc.text(form, 160, yOffset-2);
-    });
-
-    doc.setFontSize(7);
-    doc.text('Жүктің суреттемесі–описание груза', 107, 54);
-
-    // ===== Дополнительная информация =====
-    doc.setFont('FreeSans', 'normal');
-    doc.text('Қосымша ақпарат / Дополнительная информация', 105, 65);
-    doc.setFont('FreeSans', 'normal');
-    doc.rect(105, 67, 95, 30);
-    const info = [
-      ['Орындар / Места', order.places],
-      ['Нақты Салмағы / Фактический Вес', order.weight],
-      ['Көлемдік Салмағы / Объёмный Вес', order.volumeWeight],
-      ['Мөлшері / Габариты', order.dimensions && (order.dimensions.length || order.dimensions.width || order.dimensions.height)
-        ? `${order.dimensions.length || ''} x ${order.dimensions.width || ''} x ${order.dimensions.height || ''} см`
-        : ''],
-      ['Қосымша Қызмет / Дополнительные Услуги', order.additionalService],
-      ['Қосымша Қаптама / Дополнительная Упаковка', order.additionalPacking],
-      ['Жарияланған құны / Объявленная стоимость',   order.declaredValue],
-      ['Шалғай мекен / Отдаленный пункт', order.remoteArea],
-    ];
-    y = 71;
-    info.forEach(([label, value]) => {
-      doc.setFontSize(6.5);
-      doc.text(label, 107, y);
-      doc.setFontSize(8);
-      doc.text(String(value || ''), 150, y);
-      y += 3.5;
-    });
-
-    // ===== Agreement =====
-    doc.setFontSize(6.5);
-    const agreement = 'Өз қолтаңбамен курьерлік компаниясының жүк тасымалдау шарттарымен келісемін және өзім берген алушы жөнелтiлiм туралы ақпарат үшін жауапкершілікті көтеремін, сондай-ақ осы жөнелтiлiмнiң құрамында қолма-қол ақша, оның эквиваленті мен жіберуге тыйым салынған заттардың жоқтығын растаймын. Егер қабылдаған алушы тасымал үшін төлем ақшадан бас тартса, оның құны жөнелтушiмен төленеді.\nСвоей подписью я соглашаюсь с условиями курьерской компании и несу ответственность за предоставленную мною информацию о получателе и об отправителе, а также подтверждаю, что настоящее отправление не содержит наличных денег, их эквивалент и предметов запрещённых к пересылке. В случае отказа получателем от оплаты перевозки, ее стоимость оплачивается отправителем.';
-    doc.text(doc.splitTextToSize(agreement, 190), 10, 100);
-
-    doc.setFontSize(7);
-    doc.text('Жіберілген күні / дата отправления', 10, 120);
-    doc.text(today, 70, 120);
-    doc.text('қолтаңба / подпись', 150, 120);
-
-    // ===== Детали доставки =====
-    doc.setFont('FreeSans', 'normal');
-    doc.setFontSize(9);
-    doc.text('Жеткізу мәліметтері / Детали доставки', 10, 126);
-    doc.setFont('FreeSans', 'normal');
-    doc.setFontSize(7);
-    doc.rect(10, 128, 190, 19);
-    doc.text('Жеткызу туралы акпарат / Информация о доставке', 12, 132);
-    doc.text('Қабылдаушының аты-жөні / Ф.И.О Получателя', 12, 140);
-    doc.text('Барлығы / Итого', 80, 132);
-    doc.text('Қолтаңба / Подпись', 120, 132);
-    doc.text('уақыты / время', 150, 132);
-    doc.text('күні / дата', 180, 132);
-
-    doc.setFontSize(6);
-    doc.text('Мен жөнелтiлiмнiң қаптамасы зақым келтiрiлмей жеткізiлгенін растаймын.', 100, 143);
-    doc.text('Я подтверждаю, что отправление доставлено без повреждения упаковки.', 100, 146);
-    doc.text('қолтаңба / подпись', 180, 146);
-
-    doc.save(`order_${order.orderNumber}_nakladnaya.pdf`);
-  }
 } 

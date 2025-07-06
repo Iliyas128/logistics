@@ -8,8 +8,11 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     // Попытка получить пользователя из localStorage при загрузке
     const storedUser = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
+    } else if (token) {
+      setUser({ token }); // Если есть только токен, считаем авторизованным
     }
   }, []);
 
@@ -22,6 +25,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
 
   return (

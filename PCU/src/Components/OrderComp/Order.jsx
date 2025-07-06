@@ -5,7 +5,6 @@ import FullScreenSpinner from "../../shared/FullScreenSpinner.jsx";
 
 const serviceLabels = {
   insurance: 'Страховка (+1%)',
-  personalDelivery: 'Вручение лично (+50%)',
   redirection: 'Переадресация (+750 тг)',
   fragile: 'Хрупкий/Стекло (+50%)',
   industrialArea: 'Промзона/пригород (+50%)',
@@ -46,13 +45,13 @@ const initialForm = {
   tariffType: 'EXPRESS',
   deliveryRange: '',
   deliveryMethod: '',
+  mainServices: [],
   extraServices: {},
 };
 
 const mainServices = [
   { key: 'express', label: 'Экспресс Жедел / Срочно' },
   { key: 'other', label: 'Басқа / Другое' },
-  { key: 'personalDelivery', label: 'Жеке қолына / Лично в руки' },
   { key: 'city', label: 'Қала / Город' },
   { key: 'deliveryNotice', label: 'Хабарлама / Уведомление' },
 ];
@@ -92,6 +91,16 @@ const CreateOrder = () => {
         ...prev,
         extraServices: { ...prev.extraServices, [key]: checked },
       }));
+      return;
+    }
+    if (name.startsWith('mainServices.')) {
+      const key = name.split('.')[1];
+      setForm(prev => {
+        const arr = prev.mainServices?.includes(key)
+          ? prev.mainServices.filter(k => k !== key)
+          : [...(prev.mainServices || []), key];
+        return { ...prev, mainServices: arr };
+      });
       return;
     }
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -143,6 +152,7 @@ const CreateOrder = () => {
           width: parseFloat(form.dimensions.width),
           height: parseFloat(form.dimensions.height),
         },
+        mainServices: form.mainServices,
         extraServices: form.extraServices,
       };
       const res = await axios.post('http://localhost:5000/api/orders/', orderData, {
@@ -151,6 +161,7 @@ const CreateOrder = () => {
       setSuccess('Заказ успешно создан!');
       setOrderResult(res.data);
       setForm(initialForm);
+      
       setCalcResult(null);
     } catch (err) {
       setError(err.response?.data?.message || 'Ошибка при создании заказа');
@@ -232,8 +243,8 @@ const CreateOrder = () => {
                       key={s.key}
                       type="checkbox"
                       label={s.label}
-                      name={`extraServices.${s.key}`}
-                      checked={!!form.extraServices[s.key]}
+                      name={`mainServices.${s.key}`}
+                      checked={form.mainServices?.includes(s.key)}
                       onChange={handleChange}
                     />
                   ))}
@@ -255,6 +266,21 @@ const CreateOrder = () => {
                     ))}
                   </Form.Group>
                 )}
+                <Form.Group><Form.Label>Условия оплаты</Form.Label>
+                  <Form.Control as="select" name="paymentCondition" value={form.paymentCondition} onChange={handleChange} required>
+                    <option value="">Выберите условие</option>
+                    <option value="sender">Отправитель</option>
+                    <option value="receiver">Получатель</option>
+                    <option value="thirdParty">3-я сторона</option>
+                  </Form.Control>
+                </Form.Group>
+                <Form.Group><Form.Label>Форма оплаты</Form.Label>
+                  <Form.Control as="select" name="paymentForm" value={form.paymentForm} onChange={handleChange} required>
+                    <option value="">Выберите форму</option>
+                    <option value="cash">Наличные</option>
+                    <option value="invoice">По счету</option>
+                  </Form.Control>
+                </Form.Group>
                 <Button type="submit" className="mt-3" disabled={calculating}>Рассчитать стоимость</Button>
                     </Form>
               {calcResult && (
@@ -262,7 +288,7 @@ const CreateOrder = () => {
                     <h4>Итоговая стоимость: <b>{calcResult.price} тг</b></h4>
                     <div>Выбранные услуги:</div>
                     <ul>
-                      {Object.entries(calcResult.extraServices || {}).filter(([k, v]) => v.selected).map(([k, v]) => (
+                      {Object.entries(calcResult.extraServices || {}).filter(([k, v]) => v.selected || v === true).map(([k, v]) => (
                           <li key={k}>{serviceLabels[k] || k} {v.price ? `(+${v.price} тг)` : ''}</li>
                       ))}
                     </ul>

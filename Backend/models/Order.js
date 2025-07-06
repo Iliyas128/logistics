@@ -106,7 +106,22 @@ const orderSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
-  }
+  },
+
+  // Тариф и доставка
+  tariffType: {
+    type: String,
+    required: true,
+    enum: ['EXPRESS', 'PRIME', 'LOCAL'],
+  },
+  deliveryRange: String, // например: in_city, outside_city
+  deliveryMethod: String, // например: door_to_door, door_to_postamat
+
+  // Основные услуги (экспресс, уведомление и т.д.)
+  mainServices: {
+    type: [String], // массив ключей выбранных основных услуг
+    default: []
+  },
 });
 
 module.exports = mongoose.model('Order', orderSchema); 

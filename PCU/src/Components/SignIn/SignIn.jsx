@@ -35,7 +35,11 @@ function SignIn() {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       login(response.data.user);
-      navigate('/profile');
+      if (response.data.user.role === 'ADMIN') {
+        navigate('/admin');
+      } else {
+        navigate('/profile');
+      }
     } catch (error) {
       setError(`Error: ${error.response?.data?.message || error.message}`);
       console.log(error)
