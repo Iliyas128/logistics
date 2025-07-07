@@ -9,6 +9,7 @@ import AdminPanelPage from "../pages/AdminPage/AdminPanelPage.jsx";
 import PrivateRoute from "./PrivateRoute.jsx";
 import OrderPage from "../pages/OrderPage/OrderPage.jsx";
 import TrackingComp from "../Components/Tracking/TrackingComp.jsx";
+import AdminSignInPage from "../pages/AdminPage/AdminSignInPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
             {path:'admin', element:(
                     <PrivateRoute adminOnly={true}><AdminPanelPage/></PrivateRoute>
             )},
+            {path:'shmadmin', element:<AdminSignInPage/>},
         ]
     }
 ])

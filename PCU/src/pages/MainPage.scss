@@ -935,6 +935,11 @@
 
 /* Mobile S (320px) */
 @media (max-width: 320px) {
+	.hero{
+		.hero-content{
+			padding-top: 55px;
+		}
+	}
 	.about-section {
 		padding: 30px 5px;
 
@@ -1112,6 +1117,82 @@
 		}
 	}
 }
+
+/* Mobile 375px (iPhone) */
+@media (max-width: 400px) {
+	.hero {
+		padding: 0 6px;
+		width: 400px;
+		.hero-bg-video{
+			width: 400px;
+		}
+		.hero-content {
+			padding: 50px 6px;
+			h1 {
+				font-size: 22px;
+			}
+			p {
+				font-size: 13px;
+			}
+		}
+		.hero-buttons {
+			flex-direction: column;
+			gap: 8px;
+			.primary-button,
+			.secondary-button {
+				width: 100%;
+				font-size: 15px;
+				padding: 12px 0;
+			}
+		}
+	}
+	.calculator-section {
+		width: 400px;
+	}
+	.features {
+		width: 400px;
+	}
+	.about-section{
+		width: 400px;
+	}
+	.contact-section {
+		width: 400px;
+		padding: 30px 5px;
+		.contact-content {
+			.contact-form {
+				padding: 12px 5px;
+				.form-group label {
+					font-size: 13px;
+				}
+				input,
+				textarea {
+					font-size: 13px;
+					padding: 8px;
+				}
+				.submit-button {
+					font-size: 15px;
+					padding: 10px;
+				}
+			}
+		}
+	}
+	.features {
+		padding: 2rem 4px;
+	}
+	.features-grid {
+		gap: 10px;
+	}
+	.calculator-section {
+		padding: 20px 5px;
+		.calculator-container {
+			padding: 10px 5px;
+		}
+	}
+	.cta{
+		width: 400px;
+	}
+}
+
 
 .main-bottom-gif {
 	width: 100%;

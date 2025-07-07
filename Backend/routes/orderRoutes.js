@@ -33,6 +33,13 @@ router.post('/', auth, async (req, res) => {
         text: `Ваш заказ №${orderNumber} успешно создан. Статус: ${order.status}. Сумма: ${order.price} тг.`
       });
     }
+    // Отправка email админу
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: 'shmexpress@yandex.kz',
+      subject: `Создан новый заказ №${orderNumber}`,
+      text: `\nНовый заказ №${orderNumber}\nОтправитель: ${order.senderCompany} (${order.senderContact})\nПолучатель: ${order.receiverCompany} (${order.receiverContact})\nГород: ${order.senderCity} → ${order.receiverCity}\nУслуги: ${Object.keys(order.extraServices).filter(k => order.extraServices[k].selected).join(', ')}\nЦена: ${order.price} тг\nСтатус: ${order.status}`
+    });
     res.status(201).json(order);
   } catch (error) {
     res.status(400).json({ message: error.message });

@@ -191,7 +191,7 @@ const MainPage = () => {
 					<p>
 						Создайте заказ прямо сейчас и получите скидку 10% на первую доставку
 					</p>
-					<Link to='/order' className='cta-button'>
+					<Link to='/profile/order' className='cta-button'>
 						Создать заказ
 					</Link>
 				</div>
