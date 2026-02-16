@@ -45,7 +45,7 @@ Users can sign up with **OTP email verification**, create shipment orders with *
 ### Backend (`Backend/.env`)
 Create `Backend/.env` (do **NOT** commit it). Use `Backend/.env.example` as a template:
 
-```env
+env
 MONGODB_URI=
 JWT_SECRET=
 EMAIL_USER=
@@ -54,38 +54,30 @@ ADMIN_ORDER_EMAIL=
 Frontend (PCU/.env)
 Create PCU/.env (do NOT commit it). Use PCU/.env.example as a template:
 
-env
-Копировать код
+
 VITE_API_BASE_URL=http://localhost:5000
 ▶️ Run Locally
 1) Clone
-bash
-Копировать код
 git clone https://github.com/Iliyas128/logistics.git
 cd logistics
+
 2) Start Backend
-bash
-Копировать код
 cd Backend
 npm install
 npm run dev
-Backend runs at:
 
+Backend runs at:
 http://localhost:5000
 
 3) Start Frontend
-bash
-Копировать код
 cd ../PCU
 npm install
 npm run dev
-Frontend runs at:
 
+Frontend runs at:
 http://localhost:5173
 
 📁 Project Structure
-text
-Копировать код
 logistics/
 ├─ Backend/
 │  ├─ controllers/
@@ -123,23 +115,16 @@ Docker deployment
 📄 License
 Educational / Demonstration project
 
-yaml
-Копировать код
-
----
-
 ## ✅ Ещё 2 файла, которые нужно добавить (чтобы было идеально)
 
 ### 1) `Backend/.env.example`
-```env
 MONGODB_URI=
 JWT_SECRET=
 EMAIL_USER=
 EMAIL_PASS=
 ADMIN_ORDER_EMAIL=
+
 2) PCU/.env.example
-env
-Копировать код
 VITE_API_BASE_URL=http://localhost:5000
 И убедись, что .env НЕ коммитится (обычно в .gitignore уже есть):
 
