@@ -45,89 +45,83 @@ Users can sign up with **OTP email verification**, create shipment orders with *
 ### Backend (`Backend/.env`)
 Create `Backend/.env` (do **NOT** commit it). Use `Backend/.env.example` as a template:
 
-env
 MONGODB_URI=
 JWT_SECRET=
 EMAIL_USER=
 EMAIL_PASS=
 ADMIN_ORDER_EMAIL=
-Frontend (PCU/.env)
-Create PCU/.env (do NOT commit it). Use PCU/.env.example as a template:
+
+
+### Frontend (PCU/.env)
+Create `PCU/.env` (do NOT commit it). Use `PCU/.env.example` as a template:
+
 
 
 VITE_API_BASE_URL=http://localhost:5000
-▶️ Run Locally
-1) Clone
+
+
+---
+
+## ▶️ Run Locally
+
+### 1) Clone
+
+
 git clone https://github.com/Iliyas128/logistics.git
+
 cd logistics
 
-2) Start Backend
+
+### 2) Start Backend
+
+
 cd Backend
 npm install
 npm run dev
 
-Backend runs at:
-http://localhost:5000
 
-3) Start Frontend
+Backend runs at: http://localhost:5000
+
+### 3) Start Frontend
+
+
 cd ../PCU
 npm install
 npm run dev
 
-Frontend runs at:
-http://localhost:5173
 
-📁 Project Structure
+Frontend runs at: http://localhost:5173
+
+---
+
+## 📁 Project Structure
+
+
+
 logistics/
 ├─ Backend/
-│  ├─ controllers/
-│  ├─ routes/
-│  ├─ models/
-│  ├─ middleware/
-│  ├─ utils/
-│  └─ server.js
+│ ├─ controllers/
+│ ├─ routes/
+│ ├─ models/
+│ ├─ middleware/
+│ ├─ utils/
+│ └─ server.js
 └─ PCU/
-   ├─ src/
-   ├─ public/
-   └─ vite.config.js
-🧠 Engineering Highlights
-Clean separation of concerns (routes / controllers / middleware)
+├─ src/
+├─ public/
+└─ vite.config.js
 
-Environment-based configuration (ready for deployment)
 
-Business logic isolation (tariff calculation utilities)
+---
 
-Secure authentication patterns (OTP + JWT)
+## 🔮 Future Improvements
+- CI/CD pipeline (GitHub Actions)
+- Health checks (/health, /ready)
+- Structured logging & metrics
+- Tests (unit/integration)
+- Docker deployment
 
-Admin workflow for order lifecycle management
+---
 
-🔮 Future Improvements
-CI/CD pipeline (GitHub Actions)
-
-Health checks (/health, /ready)
-
-Structured logging & metrics
-
-Tests (unit/integration)
-
-Docker deployment
-
-📄 License
+## 📄 License
 Educational / Demonstration project
-
-## ✅ Ещё 2 файла, которые нужно добавить (чтобы было идеально)
-
-### 1) `Backend/.env.example`
-MONGODB_URI=
-JWT_SECRET=
-EMAIL_USER=
-EMAIL_PASS=
-ADMIN_ORDER_EMAIL=
-
-2) PCU/.env.example
-VITE_API_BASE_URL=http://localhost:5000
-И убедись, что .env НЕ коммитится (обычно в .gitignore уже есть):
-
-Backend/.env
-
-PCU/.env
