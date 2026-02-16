@@ -43,6 +43,7 @@ Users can sign up with **OTP email verification**, create shipment orders with *
 ## ⚙️ Environment Setup
 
 ### Backend (`Backend/.env`)
+
 Create `Backend/.env` (do **NOT** commit it). Use `Backend/.env.example` as a template:
 
 ```env
@@ -51,42 +52,54 @@ JWT_SECRET=
 EMAIL_USER=
 EMAIL_PASS=
 ADMIN_ORDER_EMAIL=
+```
 
-Frontend (PCU/.env)
+### Frontend (`PCU/.env`)
 
-Create PCU/.env (do NOT commit it). Use PCU/.env.example as a template:
+Create `PCU/.env` (do **NOT** commit it). Use `PCU/.env.example` as a template:
 
+```env
 VITE_API_BASE_URL=http://localhost:5000
+```
 
-▶️ Run Locally
-1) Clone
+---
+
+## ▶️ Run Locally
+
+### 1) Clone
+
+```bash
 git clone https://github.com/Iliyas128/logistics.git
 cd logistics
+```
 
-2) Start Backend
+### 2) Start Backend
+
+```bash
 cd Backend
-
 npm install
-
 npm run dev
+```
 
-Backend runs at:
-
+Backend runs at:  
 http://localhost:5000
 
-3) Start Frontend
+### 3) Start Frontend
 
+```bash
 cd ../PCU
-
 npm install
-
 npm run dev
+```
 
-Frontend runs at:
-
+Frontend runs at:  
 http://localhost:5173
 
-📁 Project Structure
+---
+
+## 📁 Project Structure
+
+```text
 logistics/
 ├─ Backend/
 │  ├─ controllers/
@@ -99,31 +112,31 @@ logistics/
    ├─ src/
    ├─ public/
    └─ vite.config.js
+```
 
-🧠 Engineering Highlights
+---
 
-Clean separation of concerns (routes / controllers / middleware)
+## 🧠 Engineering Highlights
 
-Environment-based configuration (ready for deployment)
+- Clean separation of concerns (routes / controllers / middleware)
+- Environment-based configuration (ready for deployment)
+- Business logic isolation (tariff calculation utilities)
+- Secure authentication patterns (OTP + JWT)
+- Admin workflow for order lifecycle management
 
-Business logic isolation (tariff calculation utilities)
+---
 
-Secure authentication patterns (OTP + JWT)
+## 🔮 Future Improvements
 
-Admin workflow for order lifecycle management
+- CI/CD pipeline (GitHub Actions)
+- Health checks (/health, /ready)
+- Structured logging & metrics
+- Tests (unit/integration)
+- Docker deployment
 
-🔮 Future Improvements
+---
 
-CI/CD pipeline (GitHub Actions)
-
-Health checks (/health, /ready)
-
-Structured logging & metrics
-
-Tests (unit/integration)
-
-Docker deployment
-
-📄 License
+## 📄 License
 
 Educational / Demonstration project
+
