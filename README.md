@@ -1,167 +1,152 @@
-📦 Logistics – Full-Stack Courier Management System
-🚀 Overview
+# 🚚 Logistics – Full-Stack Courier Management System
 
-Logistics is a full-stack courier management web application designed to handle shipment creation, tariff calculation, order tracking, and administrative order management.
+A full-stack logistics management platform built with **React + Node.js + MongoDB**.
 
-The system simulates a real-world logistics workflow including user authentication with OTP verification, order pricing logic, and role-based access control.
+The system allows users to create shipment orders, track deliveries, calculate tariffs, and manage logistics operations with role-based access control.
 
-This project demonstrates backend system design, distributed-ready architecture patterns, and production-oriented engineering practices.
+---
 
-🏗 Architecture
+## 🏗 Tech Stack
 
-Frontend:
+### Frontend
+- ⚛ React + Vite
+- 🎨 SCSS
+- 📄 PDF waybill generation
+- 🌍 Environment-based API configuration
 
-React + Vite
+### Backend
+- 🟢 Node.js + Express
+- 🍃 MongoDB
+- 🔐 JWT Authentication
+- 📧 OTP Email Verification
+- 🛡 Role-Based Access Control (User / Admin)
 
-SCSS styling
+---
 
-PDF waybill generation
+## ✨ Features
 
-Environment-based API configuration
+### 👤 User
+- Signup with OTP email verification
+- Login with JWT authentication
+- Create shipment orders
+- Dynamic tariff & extra-service pricing
+- Track order by order number
+- Generate shipment PDF
 
-Backend:
+### 🛠 Admin
+- Secure admin login
+- View all orders
+- Update shipment status
+- Order lifecycle management
 
-Node.js + Express
+---
 
-MongoDB
+## 🔐 Authentication Flow
 
-JWT authentication
+1. User registers
+2. OTP sent via email
+3. Account verified
+4. JWT token issued
+5. Protected routes via middleware
 
-OTP email verification
+---
 
-Role-based access control (User/Admin)
+## ⚙️ Environment Setup
 
-✨ Core Features
-👤 User
+### Backend (`Backend/.env`)
 
-Signup with OTP email verification
+Create a `.env` file inside `Backend`:
 
-Login with JWT authentication
+MONGODB_URI=
+JWT_SECRET=
+EMAIL_USER=
+EMAIL_PASS=
+ADMIN_ORDER_EMAIL=
 
-Create shipment orders
+yaml
+Копировать код
 
-Tariff + extra service pricing logic
+---
 
-Track order by order number
+### Frontend (`PCU/.env`)
 
-Generate PDF waybill
-
-🛠 Admin
-
-Secure admin login
-
-View all orders
-
-Update shipment status
-
-Order management panel
-
-🔐 Authentication Flow
-
-User registers
-
-OTP sent via email
-
-Account verified
-
-JWT issued upon login
-
-Protected routes via middleware
-
-💰 Business Logic
-
-Dynamic tariff calculation
-
-Extra services pricing (insurance, etc.)
-
-Order number generation
-
-Status updates lifecycle
-
-⚙️ Environment Configuration
-Backend (Backend/.env)
-
-Create a .env file inside Backend:
-
-MONGODB_URI=your_mongodb_connection
-JWT_SECRET=your_secret_key
-EMAIL_USER=your_email
-EMAIL_PASS=your_email_password
-ADMIN_ORDER_EMAIL=optional_admin_email
-
-Frontend (PCU/.env)
-
-Create a .env file inside PCU:
+Create a `.env` file inside `PCU`:
 
 VITE_API_BASE_URL=http://localhost:5000
 
-🖥 Local Development Setup
-1️⃣ Clone Repository
+yaml
+Копировать код
+
+---
+
+## 🖥 Local Development
+
+### 1️⃣ Clone Repository
+
+```bash
 git clone https://github.com/Iliyas128/logistics.git
 cd logistics
-
-2️⃣ Backend Setup
+2️⃣ Start Backend
+bash
+Копировать код
 cd Backend
 npm install
 npm run dev
-
-
 Backend runs at:
 
+arduino
+Копировать код
 http://localhost:5000
-
-3️⃣ Frontend Setup
+3️⃣ Start Frontend
+bash
+Копировать код
 cd PCU
 npm install
 npm run dev
-
-
 Frontend runs at:
 
+arduino
+Копировать код
 http://localhost:5173
-
 📁 Project Structure
+arduino
+Копировать код
 logistics/
 │
 ├── Backend/
 │   ├── controllers/
-│   ├── models/
 │   ├── routes/
+│   ├── models/
 │   ├── middleware/
-│   ├── utils/
 │   └── server.js
 │
 ├── PCU/
 │   ├── src/
 │   ├── public/
 │   └── vite.config.js
-
-🧠 Engineering Focus
-
-This project emphasizes:
-
-Separation of concerns (controllers / routes / services)
+🧠 Engineering Highlights
+Clean separation of concerns (routes / controllers / middleware)
 
 Environment-based configuration
 
+Production-oriented API structure
+
+Business logic isolation (tariff calculation utilities)
+
 Secure authentication patterns
 
-Production-ready API structuring
-
-Scalable backend architecture patterns
-
-📌 Future Improvements
-
-Docker deployment
+🔮 Future Improvements
+Docker containerization
 
 CI/CD pipeline
 
-Health checks endpoint
+Health check endpoint
 
-Logging & metrics
+Structured logging
 
-Unit & integration tests
+Load testing
+
+Automated testing
 
 📄 License
-
-For educational and demonstration purposes.
+Educational / Demonstration project
