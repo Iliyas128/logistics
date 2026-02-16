@@ -70,16 +70,17 @@ npm install
 
 npm run dev
 
-
 Backend runs at:
 
 http://localhost:5000
 
 3) Start Frontend
-cd ../PCU
-npm install
-npm run dev
 
+cd ../PCU
+
+npm install
+
+npm run dev
 
 Frontend runs at:
 
