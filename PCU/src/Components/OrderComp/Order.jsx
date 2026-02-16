@@ -1,6 +1,6 @@
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { api } from '../../config/axios';
 import FullScreenSpinner from "../../shared/FullScreenSpinner.jsx";
 
 const serviceLabels = {
@@ -127,7 +127,7 @@ const CreateOrder = () => {
         deliveryMethod: form.deliveryMethod,
         extraServices: form.extraServices,
       };
-      const res = await axios.post('http://localhost:5000/api/calc/calculate', calcData);
+      const res = await api.post('/api/calc/calculate', calcData);
       setCalcResult(res.data);
     } catch (err) {
       setError(err.response?.data?.message || 'Ошибка при расчёте');
@@ -155,7 +155,7 @@ const CreateOrder = () => {
         mainServices: form.mainServices,
         extraServices: form.extraServices,
       };
-      const res = await axios.post('http://localhost:5000/api/orders/', orderData, {
+      const res = await api.post('/api/orders/', orderData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSuccess('Заказ успешно создан!');

@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import styles from './SignUp.module.scss';
 import Container from 'react-bootstrap/Container';
-import axios from 'axios';
+import { api } from '../../config/axios';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import FullScreenSpinner from "../../shared/FullScreenSpinner.jsx";
@@ -24,7 +24,7 @@ function SignUp() {
     event.preventDefault();
     try {
       setLoading(true);
-      await axios.post('http://localhost:5000/api/users/register', {
+      await api.post('/api/users/register', {
         username,
         email,
         password,

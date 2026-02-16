@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { api } from '../../config/axios'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
@@ -16,7 +16,7 @@ function OtpVerify() {
 	const handleSubmit = async e => {
 		e.preventDefault()
 		try {
-			await axios.post('http://localhost:5000/api/users/verify-otp', {
+			await api.post('/api/users/verify-otp', {
 				email,
 				otp,
 			})

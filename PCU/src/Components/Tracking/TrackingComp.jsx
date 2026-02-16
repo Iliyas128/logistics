@@ -1,4 +1,4 @@
-import axios from "axios"
+import { api } from "../../config/axios"
 import {useState} from "react"
 import { Container, Form, Button, Card, Alert, Spinner, Row, Col } from "react-bootstrap"
 
@@ -18,9 +18,7 @@ const TrackingComp = () => {
         }
         try {
             setLoading(true)
-            const response = await axios.get(
-                `http://localhost:5000/api/orders/track/${orderNumber}`
-            )
+            const response = await api.get(`/api/orders/track/${orderNumber}`)
             setTrackData(response.data)
         } catch (err) {
             setError(err.response?.data?.message || "Заказ не найден!")

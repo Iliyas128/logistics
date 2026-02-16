@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import styles from './SignIn.module.scss';
-import axios from 'axios';
+import { api } from '../../config/axios';
 import { useState } from 'react';
 import FullScreenSpinner from '../../shared/FullScreenSpinner';
 import { useNavigate } from "react-router-dom";
@@ -27,7 +27,7 @@ function SignIn() {
     }
     try {
       setLoading(true);
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      const response = await api.post('/api/users/login', {
         email,
         password
       });

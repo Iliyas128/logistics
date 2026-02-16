@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import axios from "axios";
+import { api } from "../../config/axios";
 import { Card, Alert, Modal, Button } from "react-bootstrap";
 import { generateOrderPDF } from '../Admin/generateOrderPDF';
 
@@ -38,7 +38,7 @@ const [detailsOrder, setDetailsOrder] = useState(null);
 const getOrders = async()=>{
     try{setLoading(true);
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/users/orders',{
+        const response = await api.get('/api/users/orders',{
             headers: {Authorization: `Bearer ${token}`}
         });
         setOrdersList(response.data);

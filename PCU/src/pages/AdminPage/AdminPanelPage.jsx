@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { api } from '../../config/axios';
 import { Modal, Form, Button, Row, Col, Alert } from 'react-bootstrap';
 
 import { serviceLabels } from '../../Components/Admin/serviceLabels';
@@ -39,7 +39,7 @@ export default function AdminPanelPage() {
       const params = {};
       if (filter.senderCity) params.senderCity = filter.senderCity;
       if (filter.receiverCity) params.receiverCity = filter.receiverCity;
-      const res = await axios.get('http://localhost:5000/api/admin/orders', {
+      const res = await api.get('/api/admin/orders', {
         headers: { Authorization: `Bearer ${token}` },
         params,
       });
@@ -70,8 +70,8 @@ export default function AdminPanelPage() {
   const saveEdit = async () => {
     try {
       setLoading(true);
-      const res = await axios.patch(
-        `http://localhost:5000/api/admin/orders/${editOrder._id}/services`,
+      const res = await api.patch(
+        `/api/admin/orders/${editOrder._id}/services`,
         { extraServices: editServices },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -88,8 +88,8 @@ export default function AdminPanelPage() {
   const changeStatus = async (order, newStatus) => {
     try {
       setLoading(true);
-      await axios.patch(
-        `http://localhost:5000/api/admin/orders/${order._id}`,
+      await api.patch(
+        `/api/admin/orders/${order._id}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -145,7 +145,7 @@ export default function AdminPanelPage() {
         },
         extraServices: createForm.extraServices,
       };
-      await axios.post('http://localhost:5000/api/admin/orders', orderData, {
+      await api.post('/api/admin/orders', orderData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCreateSuccess('Заказ создан!');
@@ -359,7 +359,7 @@ export default function AdminPanelPage() {
                 <input type="number" min="0" value={detailsOrder.price} onChange={e => setDetailsOrder({ ...detailsOrder, price: e.target.value })} style={{width:100, marginRight:8}} /> тг
                 <Button size="sm" variant="outline-success" onClick={async () => {
                   try {
-                    await axios.patch(`http://localhost:5000/api/admin/orders/${detailsOrder._id}`, { price: detailsOrder.price }, { headers: { Authorization: `Bearer ${token}` } });
+                    await api.patch(`/api/admin/orders/${detailsOrder._id}`, { price: detailsOrder.price }, { headers: { Authorization: `Bearer ${token}` } });
                     fetchOrders();
                   } catch (e) { alert('Ошибка при обновлении цены!'); }
                 }}>Сохранить цену</Button>

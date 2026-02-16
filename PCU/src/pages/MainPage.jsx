@@ -1,11 +1,9 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import {
 	FaTruck,
 	FaMapMarkedAlt,
 	FaClock,
 	FaShieldAlt,
-	FaCalculator,
 	FaUsers,
 	FaEnvelope,
 	FaPhone,
@@ -18,7 +16,7 @@ const MainPage = () => {
 	return (
 		<div className='main-page'>
 			<NavbarComp />
-			{/* Hero Section */}A
+			{/* Hero Section */}
 			<section className='hero'>
 				<div className='hero-bg-video'>
 					<video
@@ -43,7 +41,7 @@ const MainPage = () => {
 						<Link to='/track' className='primary-button'>
 							Отследить посылку
 						</Link>
-						<Link to='/order' className='secondary-button'>
+						<Link to='/profile/order' className='secondary-button'>
 							Создать заказ
 						</Link>
 					</div>

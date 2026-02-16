@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { api } from '../../config/axios';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import FullScreenSpinner from '../../shared/FullScreenSpinner';
 import { useAuth } from '../../hooks/useAuth';
@@ -18,7 +18,7 @@ export default function AdminSignInPage() {
     setError('');
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/admin/login', {
+      const response = await api.post('/api/admin/login', {
         username,
         password
       });

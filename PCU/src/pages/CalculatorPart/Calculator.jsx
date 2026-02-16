@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { api } from '../../config/axios'
 import React, { useState } from 'react'
 import { FaWeight, FaMapMarkerAlt, FaCalculator } from 'react-icons/fa'
 import './Calculator.scss'
@@ -152,8 +152,8 @@ const Calculator = () => {
 		e.preventDefault()
 		console.log('Sending formData:', formData)
 		try {
-			const response = await axios.post(
-				'http://localhost:5000/api/calc/calculate',
+			const response = await api.post(
+				'/api/calc/calculate',
 				{ ...formData, from: 'Астана' }
 			)
 			console.log('Server response:', response.data)
