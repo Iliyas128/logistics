@@ -46,7 +46,7 @@ Users can sign up with **OTP email verification**, create shipment orders with *
 
 Create `Backend/.env` (do **NOT** commit it). Use `Backend/.env.example` as a template:
 
-```env
+```
 MONGODB_URI=
 JWT_SECRET=
 EMAIL_USER=
@@ -58,7 +58,7 @@ ADMIN_ORDER_EMAIL=
 
 Create `PCU/.env` (do **NOT** commit it). Use `PCU/.env.example` as a template:
 
-```env
+```
 VITE_API_BASE_URL=http://localhost:5000
 ```
 
